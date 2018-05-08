@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#00000000"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:text="L'admin a ajoute un utilisateur"
+        android:layout_marginLeft="@dimen/padmarg_large"
+        android:layout_marginRight="@dimen/padmarg_large"
+        android:layout_marginTop="@dimen/padmarg_small"
+        android:layout_marginBottom="@dimen/padmarg_small"
+        android:id="@+id/message"
+        android:textColor="@color/black"/>
+
+</LinearLayout>

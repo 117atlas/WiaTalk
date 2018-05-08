@@ -59,4 +59,5 @@
     <string name="pin_discussion">Epingler la discussion</string>
     <string name="delete_discussion">Supprimer la discussion</string>
     <string name="clear_discussion">Vider la discussion</string>
+    <string name="message_hint">Message</string>
 </resources>

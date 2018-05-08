@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight=".8">
+
+    </LinearLayout>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight=".2"
+        app:cardElevation="4dp"
+        android:layout_marginRight="@dimen/padmarg_small"
+        android:layout_marginTop="@dimen/padmarg_xsmall"
+        android:layout_marginBottom="@dimen/padmarg_xsmall">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/message_sent_view_bg">
+
+            <include layout="@layout/message_sent_content"></include>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+    <!---->
+
+</LinearLayout>

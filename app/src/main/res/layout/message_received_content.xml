@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sender"
+        android:layout_marginTop="@dimen/padmarg_xsmall"
+        android:paddingLeft="@dimen/padmarg_small"
+        android:text="Sender"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_big"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/reply_container"
+        android:background="@drawable/marked_message_itewview_bg"
+        android:layout_marginTop="@dimen/padmarg_xsmall"
+        android:layout_marginLeft="@dimen/padmarg_xsmall"
+        android:layout_marginRight="@dimen/padmarg_xsmall"
+        android:layout_marginBottom="@dimen/padmarg_xsmall">
+
+        <FrameLayout
+            android:layout_width="4dp"
+            android:layout_height="0dp"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@color/colorPrimaryDark"
+            android:id="@+id/reply_color"></FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/padmarg_xsmall"
+            android:layout_toRightOf="@id/reply_color"
+            android:paddingTop="@dimen/padmarg_xsmall"
+            android:paddingLeft="@dimen/padmarg_xsmall"
+            android:paddingRight="@dimen/padmarg_xsmall"
+            android:paddingBottom="@dimen/padmarg_xsmall">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_normal"
+                android:text="Samaritain"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"
+                android:id="@+id/reply_message_sender"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padmarg_xsmall"
+                android:textColor="@color/darkgrey"
+                android:id="@+id/reply_message_message"
+                android:text="Message suivi. Pourquoi? Lorem ipsum batobesse jsjdskdjkdjs skjdkjksjdks dsjsdjkdsj sdjkdjksjd sdjsdjksdj skjdksjdksjd dskjjkdsdjdskjs sdjksjdksd sdkjksd d d d dd d d d"
+                android:lines="3"
+                android:ellipsize="end"
+                android:textSize="@dimen/text_small"/>
+
+        </LinearLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dididsldklskd klsdlskdlskd klskdlsdk kdslkdlsd klsdldkslsldls lksdkldklskld lkdsldlskd lkdslkdls ldkslkdls"
+        android:layout_marginRight="@dimen/padmarg_small"
+        android:layout_marginLeft="@dimen/padmarg_small"
+        android:layout_marginTop="@dimen/padmarg_xsmall"
+        android:layout_marginBottom="@dimen/padmarg_xsmall"
+        android:textColor="@color/black"
+        android:id="@+id/message"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/padmarg_medium"
+        android:layout_marginBottom="@dimen/padmarg_xsmall">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:id="@+id/time"
+            android:text="16 : 16"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/time"
+            android:id="@+id/message_status"
+            android:visibility="gone"
+            android:src="@drawable/ic_double_tick_green"
+            android:layout_marginRight="@dimen/padmarg_small"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

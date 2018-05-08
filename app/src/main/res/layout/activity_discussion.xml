@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ensp.reseau.wiatalk.ui.activities.DiscussionActivity"
+    android:background="@drawable/background">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appbarlayout">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:id="@+id/toolbar"
+            android:focusedByDefault="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:id="@+id/toolbar_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/pp"
+                    android:src="@drawable/ppdisc1"
+                    android:layout_gravity="center_vertical"
+                    app:civ_border_width="1dp"
+                    app:civ_border_color="@color/colorPrimaryDark"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="@dimen/padmarg_small">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/discussion_name"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/text_big"
+                        android:text="Samaritain Sims"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/discussion_infos"
+                        android:layout_marginTop="@dimen/padmarg_xsmall"
+                        android:lines="1"
+                        android:ellipsize="end"
+                        android:textColor="@color/white"
+                        android:text="Membre 1, Membre 2, Membre 3, Memebre 4"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:cardElevation="8dp"
+            android:id="@+id/send_message_container">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/reply_message_container"
+                    android:background="@drawable/message_itview_bg">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_forward"
+                        android:id="@+id/reply_message_link"
+                        android:padding="@dimen/padmarg_xsmall"
+                        android:clickable="true"
+                        android:background="@null"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_close"
+                        android:layout_gravity="right"
+                        android:padding="@dimen/padmarg_xsmall"
+                        android:id="@+id/close_reply_message"
+                        android:clickable="true"
+                        android:background="@null"
+                        android:layout_alignParentRight="true"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/padmarg_xsmall"
+                        android:layout_toLeftOf="@id/close_reply_message"
+                        android:layout_toRightOf="@id/reply_message_link">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/reply_message_sender"
+                            android:text="Sender"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorAccent"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/padmarg_xsmall"
+                            android:text="@string/mobile_num_request"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:id="@+id/reply_message_message"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padmarg_xsmall">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padmarg_xsmall"
+                        android:clickable="true"
+                        android:background="@null"
+                        android:src="@drawable/ic_insert_emoticon"
+                        android:id="@+id/emoji"
+                        android:foreground="?android:attr/selectableItemBackground"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:orientation="horizontal"
+                        android:id="@+id/file_container"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/padmarg_xsmall"
+                            android:src="@drawable/ic_attach_file"
+                            android:id="@+id/file"
+                            android:foreground="?android:attr/selectableItemBackground"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/padmarg_xsmall"
+                            android:src="@drawable/ic_mic"
+                            android:id="@+id/mic"
+                            android:layout_marginLeft="@dimen/padmarg_xsmall"
+                            android:foreground="?attr/selectableItemBackground"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/send"
+                        android:src="@drawable/ic_send"
+                        android:clickable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:layout_alignParentRight="true"
+                        android:background="@null"
+                        android:padding="@dimen/padmarg_xsmall"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/text"
+                        android:layout_toRightOf="@id/emoji"
+                        android:layout_toLeftOf="@id/send"
+                        android:layout_marginLeft="@dimen/padmarg_xsmall"
+                        android:layout_marginRight="@dimen/padmarg_xsmall"
+                        android:textColor="@color/black"
+                        android:text=""
+                        android:scrollbars="vertical"
+                        android:maxLines="5"
+                        android:textSize="@dimen/text_big"
+                        android:padding="@dimen/padmarg_xsmall"
+                        android:background="#00000000"
+                        android:layout_centerVertical="true"
+                        android:hint="@string/message_hint"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_above="@id/send_message_container"
+            android:id="@+id/scroll">
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/messages_list">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </android.support.v4.widget.NestedScrollView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/scroll"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/padmarg_small"
+            android:layout_marginRight="@dimen/padmarg_small"
+            android:src="@drawable/ic_keyboard_arrow_down"
+            app:backgroundTint="@color/white"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:id="@+id/godown"
+            app:rippleColor="#CCCCCC"
+            android:clickable="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/scroll"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/padmarg_small"
+            android:textSize="@dimen/text_small"
+            android:background="#44000000"
+            android:paddingTop="@dimen/padmarg_xsmall"
+            android:paddingBottom="@dimen/padmarg_xsmall"
+            android:paddingRight="@dimen/text_small"
+            android:paddingLeft="@dimen/text_small"
+            android:text="06 Mars"
+            android:id="@+id/date_indicator"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
+
+    </RelativeLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>
