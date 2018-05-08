@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:title="@string/myprofile"
+            android:id="@+id/myprofile"
+            android:icon="@drawable/ic_account_circle"></item>
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:title="@string/newgroup"
+            android:id="@+id/newgroup"
+            android:icon="@drawable/ic_group"></item>
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:title="@string/contacts"
+            android:id="@+id/contacts"
+            android:icon="@drawable/ic_contacts"></item>
+        <item android:title="@string/marked_messages"
+            android:id="@+id/markedmessages"
+            android:icon="@drawable/ic_saved_message"></item>
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:title="@string/settings"
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_settings"></item>
+    </group>
+
+    <item android:title="@string/others">
+        <menu>
+            <item android:title="@string/share"
+                android:id="@+id/share"
+                android:icon="@drawable/ic_share"></item>
+            <item android:title="@string/help"
+                android:id="@+id/help"
+                android:icon="@drawable/ic_help"></item>
+            <item android:title="@string/report"
+                android:id="@+id/report"
+                android:icon="@drawable/ic_report_problem"></item>
+        </menu>
+    </item>
+</menu>

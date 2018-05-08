@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="@dimen/padmarg_small"
+        android:layout_marginLeft="@dimen/padmarg_xsmall"
+        android:layout_gravity="center_vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/pp"
+            android:src="@drawable/ppdisc1"
+            android:visibility="gone"/>
+        
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/discussion_initiales"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:background="@drawable/initiales_bg"
+            android:gravity="center"
+            android:text="MS"
+            android:textSize="@dimen/text_large"/>
+        
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/message_itview_bg"
+        android:layout_marginLeft="@dimen/padmarg_small"
+        android:paddingTop="@dimen/padmarg_small"
+        android:paddingBottom="@dimen/padmarg_small">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padmarg_xsmall"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/padmarg_small"
+            android:paddingBottom="@dimen/padmarg_small"
+            android:paddingLeft="@dimen/padmarg_small"
+            android:paddingRight="@dimen/padmarg_medium"
+            android:layout_alignParentRight="true"
+            android:id="@+id/right_part">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10 : 47"
+                android:id="@+id/date"
+                android:layout_gravity="center_horizontal"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/padmarg_xsmall">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/message_status"
+                    android:src="@drawable/ic_tick"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="visible"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/unread_messages"
+                    android:layout_marginLeft="@dimen/padmarg_small"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:paddingTop="@dimen/padmarg_xsmall"
+                    android:paddingBottom="@dimen/padmarg_xsmall"
+                    android:paddingLeft="@dimen/padmarg_small"
+                    android:paddingRight="@dimen/padmarg_small"
+                    android:background="@drawable/number_unread_message_bg"
+                    android:text="232"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/right_part"
+            android:layout_centerVertical="true"
+            android:paddingTop="@dimen/padmarg_xsmall"
+            android:paddingBottom="@dimen/padmarg_xsmall"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/discussion_name"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_big"
+                    android:text="Moha La Squale"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mute"
+                    android:layout_marginLeft="@dimen/padmarg_small"
+                    android:src="@drawable/ic_mute_discussion"
+                    android:layout_gravity="center_vertical"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:ellipsize="end"
+                android:maxLength="40"
+                android:layout_marginTop="@dimen/padmarg_xsmall"
+                android:text="Toi t'es qui? Tu veux quoi? T'etais ou??jjkjkjkjkj"
+                android:id="@+id/last_message"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

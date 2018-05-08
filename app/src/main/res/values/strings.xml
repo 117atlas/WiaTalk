@@ -1,0 +1,62 @@
+<resources>
+    <string name="app_name">WiaTalk</string>
+    <string name="register_title">Inscription</string>
+    <string-array name="days">
+        <item>Dimanche</item>
+        <item>Lundi</item>
+        <item>Mardi</item>
+        <item>Mercredi</item>
+        <item>Jeudi</item>
+        <item>Vendredi</item>
+        <item>Samedi</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome">Bienvenue sur WiaTalk.\nVeillez entrer votre numero de telephone</string>
+    <string name="mobile_num_request">Un SMS contenant un code de confirmation vous sera envoyé, il vous suffira de rentrer ce code pour confirmer que votre numéro de téléphone.</string>
+    <string name="validate">CONTINUER</string>
+    <string name="otp_request">Un SMS contenant un code de confirmation de votre numero de telephone vous a ete envoye. Renseignez ce code</string>
+    <string name="wait_sms">SMS NON RECU? ATTENDEZ</string>
+    <string name="wrong_number">CHANGER DE NUMERO DE TELEPHONE</string>
+    <string name="userinfos_request">Choisissez une photo de profil et un nom d\'utilisateur</string>
+    <string name="username">Nom d\'utilisateur</string>
+    <string name="backup_detected">Des sauvegardes de vos donnees WiaTalk ont ete trouvees. Souhaitez vous les restaurer?</string>
+    <string name="no">NON</string>
+    <string name="yes">OUI</string>
+    <string name="restore_response_positive">La restauration s\'est terminee avec succes</string>
+    <string name="restart_restore">REESSAYER</string>
+    <string name="empty_mobile">Veillez entrer votre numero de telephone</string>
+    <string name="invalide_mobile">Ce numero ne correspond pas aux numeros de telephone camerounais</string>
+    <string name="confirm_mobile">Confirmez vous que le numero ??? est bien correcte et est le votre ?</string>
+    <string name="empty_code_otp">Veillez entrer votre code de verification</string>
+    <string name="request_sms">REDEMANDER LE SMS DE CONFIRMATION</string>
+    <string name="processing">Veillez patienter</string>
+    <string name="empty_username">S\'il vous plait entrez un nom d\'utilisateur</string>
+    <string name="choose_pp">Continuer avec</string>
+    <string name="profile_img_chooser_gallery">LA GALERIE</string>
+    <string name="profile_img_chooser_appphoto">L\'APPAREIL PHOTO</string>
+    <string name="gallery_permissions_denied">Cette application n\'a pas l\'autorisation de lire ou d\'ecrire dans la memoire</string>
+    <string name="camera_permissions_denied">Cette application n\'a pas le droit de prendre des photos ou d\'ecrire dans la memoire</string>
+    <string name="profile_img_chooser_gallery_title">Selectionnez votre photo de profile dans la gallerie</string>
+    <string name="newgroup">Nouveau groupe</string>
+    <string name="myprofile">Mon profile</string>
+    <string name="contacts">Mes contacts</string>
+    <string name="marked_messages">Messages importants</string>
+    <string name="settings">Parametres</string>
+    <string name="others">Autres</string>
+    <string name="share">Partager l\'application</string>
+    <string name="help">Aide</string>
+    <string name="report">Signaler un probleme</string>
+    <string name="tab_messages">Messages</string>
+    <string name="tab_calls">Appels</string>
+    <string name="open_drawer">Ouvrir Menu</string>
+    <string name="close_drawer">Fermer Menu</string>
+    <string name="no_message_message">Vous n\'avez aucune discussion en cours. Appuyez sur le bouton en bas a droite pour commencer a echanger avec vos contacts</string>
+    <string name="no_calls_message">Vous n\'avez ni passé ni reçu aucun appel. Appuyez sur le bouton en bas à droite pour lancer un appel</string>
+    <string name="number_items">\??? discussions</string>
+    <string name="yesterday">Hier</string>
+    <string name="pin_discussion">Epingler la discussion</string>
+    <string name="delete_discussion">Supprimer la discussion</string>
+    <string name="clear_discussion">Vider la discussion</string>
+</resources>

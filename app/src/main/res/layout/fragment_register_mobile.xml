@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="ensp.reseau.wiatalk.ui.fragment.RegisterMobileFragment"
+    android:padding="@dimen/padmarg_small">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/welcome"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/mobile_num_request"
+        android:layout_marginTop="@dimen/padmarg_small"
+        android:textColor="@color/darkgrey"/>
+
+    <android.support.v7.widget.AppCompatEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padmarg_big"
+        android:inputType="phone"
+        android:text="697-266-488"
+        android:gravity="center_horizontal"
+        android:id="@+id/mobile"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/RaisedButtons"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/validate"
+        android:textColor="@color/white"
+        android:id="@+id/next"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/padmarg_medium"/>
+
+</LinearLayout>

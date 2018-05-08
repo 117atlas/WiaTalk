@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="200dp"
+    android:background="@color/colorPrimary"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="@dimen/drawer_image"
+        android:layout_height="@dimen/drawer_image"
+        app:civ_border_width="4dp"
+        android:src="@drawable/kb"
+        app:civ_border_color="@color/colorPrimaryDark"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="@dimen/padmarg_large"
+        android:layout_marginLeft="@dimen/padmarg_large"
+        android:id="@+id/pp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:background="#55000000"
+        android:paddingTop="@dimen/padmarg_small"
+        android:paddingBottom="@dimen/padmarg_small"
+        android:paddingRight="@dimen/padmarg_small"
+        android:paddingLeft="@dimen/padmarg_medium">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/username"
+            android:textSize="@dimen/text_big"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:text="Atlas Criminel"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/usermobile"
+            android:textColor="@color/white"
+            android:text="+237 6 97 26 64 88"
+            android:layout_marginTop="4dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
