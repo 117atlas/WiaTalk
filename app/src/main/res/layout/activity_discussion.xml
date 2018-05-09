@@ -17,13 +17,12 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:id="@+id/toolbar"
-            android:focusedByDefault="true">
+            android:theme="@style/Toolbar.Style">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:id="@+id/toolbar_content">
 
@@ -72,7 +71,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -164,7 +164,7 @@
                         android:layout_alignParentRight="true"
                         android:orientation="horizontal"
                         android:id="@+id/file_container"
-                        android:visibility="gone">
+                        android:visibility="invisible">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -201,7 +201,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/text"
                         android:layout_toRightOf="@id/emoji"
-                        android:layout_toLeftOf="@id/send"
+                        android:layout_toLeftOf="@id/file_container"
                         android:layout_marginLeft="@dimen/padmarg_xsmall"
                         android:layout_marginRight="@dimen/padmarg_xsmall"
                         android:textColor="@color/black"
@@ -220,12 +220,10 @@
 
         </android.support.v7.widget.CardView>
 
-
-        <android.support.v4.widget.NestedScrollView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:layout_marginTop="?attr/actionBarSize"
             android:layout_above="@id/send_message_container"
             android:id="@+id/scroll">
 
@@ -236,7 +234,7 @@
 
             </android.support.v7.widget.RecyclerView>
 
-        </android.support.v4.widget.NestedScrollView>
+        </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
@@ -249,6 +247,7 @@
             app:backgroundTint="@color/white"
             android:foreground="?android:attr/selectableItemBackground"
             android:id="@+id/godown"
+            app:fabSize="mini"
             app:rippleColor="#CCCCCC"
             android:clickable="true"/>
 

@@ -18,7 +18,7 @@
 
     <!-- Overriding sizes of the FAB -->
     <dimen name="design_fab_size_normal">55dp</dimen>
-    <dimen name="design_fab_size_mini">45dp</dimen>
+    <dimen name="design_fab_size_mini">35dp</dimen>
     <dimen name="drawer_image">100dp</dimen>
     <dimen name="padmarg_xsmall">4dp</dimen>
     <dimen name="padmarg_xxsmall">2dp</dimen>

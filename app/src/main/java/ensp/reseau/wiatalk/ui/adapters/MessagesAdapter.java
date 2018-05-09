@@ -3,6 +3,7 @@ package ensp.reseau.wiatalk.ui.adapters;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -20,8 +21,14 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context context;
     private ArrayList<Message> messages;
 
+    private ArrayList<RecyclerView.ViewHolder> viewHolders = new ArrayList<>();
+
     public MessagesAdapter(Context context){
         this.context = context;
+    }
+
+    public ArrayList<Message> getMessages() {
+        return messages;
     }
 
     public void setMessages(ArrayList<Message> messages) {
@@ -46,6 +53,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (holder instanceof MessagesReceivedViewHolder) ((MessagesReceivedViewHolder)holder).setMessageClickHandler((IMessageClickHandler)context);
         else if (holder instanceof MessagesSentViewHolder) ((MessagesSentViewHolder)holder).setMessageClickHandler((IMessageClickHandler)context);
 
+        if (holder instanceof  MessagesReceivedViewHolder || holder instanceof MessagesSentViewHolder) viewHolders.add(holder);
         return holder;
     }
 
@@ -66,5 +74,14 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount() {
         return messages==null?0:messages.size();
+    }
+
+    public void selectItems(ArrayList<Integer> selectedItems){
+        for (RecyclerView.ViewHolder holder : viewHolders){
+            if (holder instanceof MessagesSentViewHolder || holder instanceof MessagesReceivedViewHolder){
+                if ( selectedItems.contains(((MessagesSentViewHolder)holder).getCurrentPosition()) ) ((MessagesSentViewHolder)holder).select(context);
+                else ((MessagesSentViewHolder)holder).deselect();
+            }
+        }
     }
 }

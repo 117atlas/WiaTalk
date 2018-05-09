@@ -10,10 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight=".2"
-        app:cardElevation="4dp"
+        app:cardElevation="2dp"
         android:layout_marginLeft="@dimen/padmarg_small"
         android:layout_marginTop="@dimen/padmarg_xsmall"
-        android:layout_marginBottom="@dimen/padmarg_xsmall">
+        android:layout_marginBottom="@dimen/padmarg_xsmall"
+        android:foreground="?attr/selectableItemBackground">
 
         <LinearLayout
             android:layout_width="match_parent"

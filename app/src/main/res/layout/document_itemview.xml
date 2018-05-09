@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="@dimen/padmarg_xsmall"
+        android:src="@drawable/headset"
+        android:id="@+id/document_type"
+        android:layout_gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:background="@drawable/document_pp_doc"
+        android:gravity="center"
+        android:textSize="@dimen/text_big"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:text="DOC"
+        android:layout_marginLeft="@dimen/padmarg_xsmall"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/document_type"
+        android:background="@drawable/message_itview_bg">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/padmarg_small"
+            android:layout_marginLeft="@dimen/padmarg_small"
+            android:id="@+id/audio_length_container"
+            android:orientation="vertical"
+            android:layout_centerVertical="true">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/select"
+                android:layout_marginTop="@dimen/padmarg_xsmall"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toLeftOf="@id/audio_length_container"
+            android:padding="@dimen/padmarg_small"
+            android:layout_marginTop="@dimen/padmarg_xsmall"
+            android:layout_marginBottom="@dimen/padmarg_xsmall"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/document_name"
+                android:text="Cours de programmation.doc"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="@dimen/text_big"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/document_size"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="3.2 Mo"
+                android:layout_marginTop="@dimen/padmarg_xsmall"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

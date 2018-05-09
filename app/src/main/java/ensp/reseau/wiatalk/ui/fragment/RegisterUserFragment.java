@@ -178,7 +178,7 @@ public class RegisterUserFragment extends Fragment implements ChoosePpFragment.I
             if (resultCode == RESULT_OK && data!=null && data.getData()!=null){
                 imageFileUri = data.getData();
                 try{
-                    String imageFilePath =  FilesUtils.copyToTopSalesImagesDirectory(FilesUtils.UriToPath(imageFileUri, getContext()), 0);
+                    String imageFilePath =  FilesUtils.copyToWiaTalkImagesDirectory(FilesUtils.UriToPath(imageFileUri, getContext()), 0);
                     //SET LOCAL PHOTO, UPLOAD AND SHOW IN VIEW
                     showPp();
                 } catch (Exception e){

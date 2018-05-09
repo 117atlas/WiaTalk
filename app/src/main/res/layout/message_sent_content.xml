@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:id="@+id/time"
-            android:text="16 : 16"/>
+            android:text="16:16"/>
 
         <ImageView
             android:layout_width="wrap_content"

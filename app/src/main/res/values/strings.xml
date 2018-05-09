@@ -60,4 +60,19 @@
     <string name="delete_discussion">Supprimer la discussion</string>
     <string name="clear_discussion">Vider la discussion</string>
     <string name="message_hint">Message</string>
+    <string name="empty">Vider la discussion</string>
+    <string name="search">Rechercher</string>
+    <string name="reply">Repondre</string>
+    <string name="copy">Copier</string>
+    <string name="forward">Partager</string>
+    <string name="delete">Supprimer</string>
+    <string name="file_chooser">Envoyer un fichier</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">GALERIE</string>
+    <string name="video">Video</string>
+    <string name="audio">Audio</string>
+    <string name="file">Fichier</string>
+    <string name="document">Document</string>
+    <string name="documents_activity">Documents</string>
+    <string name="audios_activity">Fichiers Audio</string>
 </resources>

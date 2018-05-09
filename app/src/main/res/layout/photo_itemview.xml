@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:background="@null"
+    android:foreground="?attr/selectableItemBackground">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:id="@+id/photo"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/select"
+        android:background="@color/white"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/padmarg_medium">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padmarg_small"
+        android:layout_marginBottom="@dimen/padmarg_xsmall">
+
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_close"
+            android:id="@+id/close_file_chooser"
+            style="@style/Base.Widget.AppCompat.Button.Borderless.Colored" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/close_file_chooser"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/padmarg_medium"
+            android:text="@string/file_chooser"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_big"/>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/photos_list"
+        android:paddingLeft="@dimen/padmarg_small"
+        android:paddingRight="@dimen/padmarg_small">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DDDDDD"
+        android:layout_marginRight="@dimen/padmarg_small"
+        android:layout_marginLeft="@dimen/padmarg_small"
+        android:layout_marginTop="@dimen/padmarg_small">
+
+    </View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/padmarg_small">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:background="@null"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_weight=".2">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/camera"
+                android:id="@+id/camera"
+                android:text="@string/camera"
+                android:drawablePadding="@dimen/padmarg_small"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:padding="@dimen/padmarg_xsmall"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:background="@null"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_weight=".2">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/gallery"
+                android:id="@+id/gallery"
+                android:text="@string/gallery"
+                android:drawablePadding="@dimen/padmarg_small"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:padding="@dimen/padmarg_xsmall"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:background="@null"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_weight=".2">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/video_player"
+                android:id="@+id/video"
+                android:text="@string/video"
+                android:drawablePadding="@dimen/padmarg_small"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:padding="@dimen/padmarg_xsmall"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:background="@null"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_weight=".2">
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/headset"
+                android:id="@+id/audio"
+                android:text="@string/audio"
+                android:drawablePadding="@dimen/padmarg_small"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:padding="@dimen/padmarg_xsmall"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:background="@null"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_weight=".2">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/vector"
+                android:id="@+id/document"
+                android:text="@string/document"
+                android:textSize="@dimen/text_xsmall"
+                android:drawablePadding="@dimen/padmarg_small"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:padding="@dimen/padmarg_xsmall"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

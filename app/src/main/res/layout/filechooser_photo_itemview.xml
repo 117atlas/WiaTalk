@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:layout_marginRight="@dimen/padmarg_xsmall"
+    android:layout_marginLeft="@dimen/padmarg_xsmall"
+    android:clickable="true"
+    android:background="@null"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/photo"
+        android:src="@mipmap/logo"/>
+
+</RelativeLayout>

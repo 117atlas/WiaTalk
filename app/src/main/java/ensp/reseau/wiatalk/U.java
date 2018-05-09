@@ -1,7 +1,14 @@
 package ensp.reseau.wiatalk;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.SystemClock;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.system.Os;
 import android.widget.ImageView;
 
@@ -16,6 +23,8 @@ import java.util.Date;
  */
 
 public class U {
+    public static final int READ_EXTERNAL_STORAGE_REQ_PERM_CODE = 177;
+
     public static String[] toArray(ArrayList<String> list){
         if (list==null) return null;
         String[] res = new String[list.size()];
@@ -73,5 +82,44 @@ public class U {
                 .thumbnail(0.5f)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
+    }
+
+
+    public static  boolean checkPermission(final Context context){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            if(context.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
+                if(((AppCompatActivity)context).shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)){
+                    // Show an alert dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("Read external storage permission is required.");
+                    builder.setTitle("Please grant permission");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ActivityCompat.requestPermissions(
+                                    ((AppCompatActivity)context),
+                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                    READ_EXTERNAL_STORAGE_REQ_PERM_CODE
+                            );
+                        }
+                    });
+                    builder.setNeutralButton("Cancel",null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }else {
+                    // Request permission
+                    ActivityCompat.requestPermissions(
+                            ((AppCompatActivity)context),
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            READ_EXTERNAL_STORAGE_REQ_PERM_CODE
+                    );
+                }
+                return false;
+            }else {
+                // Permission already granted
+                return true;
+            }
+        }
+        return true;
     }
 }

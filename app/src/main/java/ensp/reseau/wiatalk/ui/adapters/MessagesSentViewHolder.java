@@ -1,5 +1,6 @@
 package ensp.reseau.wiatalk.ui.adapters;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,8 @@ import ensp.reseau.wiatalk.models.Message;
 
 public class MessagesSentViewHolder extends RecyclerView.ViewHolder {
 
+    protected View root;
+
     protected ConstraintLayout replyContainer;
     protected TextView replyMessageSender;
     protected TextView replyMessageMessage;
@@ -27,10 +30,15 @@ public class MessagesSentViewHolder extends RecyclerView.ViewHolder {
 
     protected int currentPosition;
 
+    public int getCurrentPosition() {
+        return currentPosition;
+    }
+
     protected IMessageClickHandler messageClickHandler;
 
     public MessagesSentViewHolder(View itemView) {
         super(itemView);
+        root = itemView;
         replyContainer = itemView.findViewById(R.id.reply_container);
         replyMessageSender = itemView.findViewById(R.id.reply_message_sender);
         replyMessageMessage = itemView.findViewById(R.id.reply_message_message);
@@ -42,14 +50,13 @@ public class MessagesSentViewHolder extends RecyclerView.ViewHolder {
             @Override
             public boolean onLongClick(View view) {
                 messageClickHandler.longClick(currentPosition);
-                return false;
+                return true;
             }
         });
-        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View view) {
+            public void onClick(View view) {
                 messageClickHandler.click(currentPosition);
-                return false;
             }
         });
     }
@@ -68,5 +75,13 @@ public class MessagesSentViewHolder extends RecyclerView.ViewHolder {
             replyContainer.setVisibility(View.VISIBLE);
         }
         else replyContainer.setVisibility(View.GONE);
+    }
+
+    public void select(Context context){
+        root.setBackgroundResource(R.drawable.selected_bg);
+    }
+
+    public void deselect(){
+        root.setBackgroundColor(Color.argb(0, 0, 0, 0));
     }
 }
