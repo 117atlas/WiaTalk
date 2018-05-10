@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 
 import java.io.File;
@@ -25,6 +26,29 @@ public class FilesUtils {
 
     public static Uri getOutputImageFileURI(int userID){
         return Uri.fromFile(getOutputImageFile(userID));
+    }
+
+    public static File newVoiceNote(){
+        final String parentDir = Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"WiaTalk";
+        File parent = new File(parentDir);
+        if (!parent.exists()){
+            if (!parent.mkdirs()){
+                Log.d("MKDIR ERR", "Oops! Failed create "
+                        + parentDir + " directory");
+                return null;
+            }
+        }
+        File vn = new File(parentDir+File.separator+"VN"+System.nanoTime()+".vn.m4a");
+        if (vn.exists()) vn.delete();
+        try {
+            vn.createNewFile();
+            return vn;
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d("MKDIR ERR", "Oops! Failed create "
+                    + vn.getAbsolutePath() + " directory");
+            return null;
+        }
     }
 
     public static File getOutputImageFile(int userID){

@@ -77,4 +77,5 @@
     <string name="audios_activity">Fichiers Audio</string>
     <string name="gallery_name">Galerie</string>
     <string name="legend">Un commentaire</string>
+    <string name="recording">Enregistrement...</string>
 </resources>

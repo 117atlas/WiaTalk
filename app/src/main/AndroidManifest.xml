@@ -30,7 +30,8 @@
         <activity android:name=".ui.activities.DocumentsActivity" />
         <activity android:name=".ui.activities.GalleryActivity" />
         <activity android:name=".ui.activities.GalleryBucketActivity" />
-        <activity android:name=".ui.activities.VideoViewActivity"></activity>
+        <activity android:name=".ui.activities.VideoViewActivity" />
+        <activity android:name=".ui.activities.ContactInfosActivity"></activity>
     </application>
 
 </manifest>

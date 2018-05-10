@@ -3,9 +3,12 @@ package ensp.reseau.wiatalk.ui.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -27,6 +30,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.piasy.rxandroidaudio.AudioRecorder;
+import com.vanniktech.emoji.EmojiEditText;
+import com.vanniktech.emoji.EmojiManager;
+import com.vanniktech.emoji.EmojiPopup;
+import com.vanniktech.emoji.ios.IosEmojiProvider;
+
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
@@ -46,6 +55,8 @@ import static android.content.ContentValues.TAG;
 
 public class DiscussionActivity extends AppCompatActivity implements IMessageClickHandler, ICameraHandler{
 
+    private CoordinatorLayout root;
+
     private LinearLayout toolbarContent;
     private CircleImageView pp;
     private TextView discName;
@@ -64,12 +75,22 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
     private TextView replyMessageMessage;
     private ImageView closereplyMessage;
 
+    private RelativeLayout textmessageContainer;
     private ImageView emoji;
-    private EditText text;
+    private EmojiEditText text;
     private ImageView send;
     private LinearLayout fileContainer;
     private ImageView voicenote;
     private ImageView file;
+    private EmojiPopup emojiPopup;
+
+    private LinearLayout recordContainer;
+    private ImageView closeRecordContainer;
+    private TextView recordedTime;
+    private ImageView sendRecordedAudio;
+    private AudioRecorder mAudioRecorder;
+    private File mAudioFile;
+    private boolean isRecording = false;
 
 
     private boolean longClick = false;
@@ -82,16 +103,23 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        EmojiManager.install(new IosEmojiProvider());
+
         setContentView(R.layout.activity_discussion);
+
         initializeWidgets();
         scrollingManager();
         replyMessageManager();
         sendMessageManager();
+        initRecordContainer();
 
         test();
     }
 
     private void initializeWidgets(){
+        root = findViewById(R.id.root);
+
         toolbarContent = findViewById(R.id.toolbar_content);
         pp = findViewById(R.id.pp);
         discName = findViewById(R.id.discussion_name);
@@ -120,12 +148,19 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
         replyMessageMessage = findViewById(R.id.reply_message_message);
         closereplyMessage = findViewById(R.id.close_reply_message);
 
+        textmessageContainer = findViewById(R.id.textmessage_container);
         emoji = findViewById(R.id.emoji);
         text = findViewById(R.id.text);
         send = findViewById(R.id.send);
         fileContainer = findViewById(R.id.file_container);
         voicenote = findViewById(R.id.mic);
         file = findViewById(R.id.file);
+        emojiPopup = EmojiPopup.Builder.fromRootView(root).build(text);
+
+        recordContainer = findViewById(R.id.record_container);
+        closeRecordContainer = findViewById(R.id.close_record);
+        recordedTime = findViewById(R.id.record_duration);
+        sendRecordedAudio = findViewById(R.id.send_record);
     }
 
     private void hideToolbarElements(){
@@ -175,7 +210,14 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
         emoji.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (emojiPopup.isShowing()) {
+                    emoji.setImageResource(R.drawable.ic_keyboard);
+                    emojiPopup.dismiss();
+                }
+                else {
+                    emoji.setImageResource(R.drawable.ic_insert_emoticon);
+                    emojiPopup.toggle();
+                }
             }
         });
         text.addTextChangedListener(new TextWatcher() {
@@ -215,9 +257,42 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
         send.setVisibility(View.VISIBLE);
         fileContainer.setVisibility(View.GONE);
     }
+
     private void showFileContainer(){
         send.setVisibility(View.GONE);
         fileContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void initRecordContainer(){
+        textmessageContainer.setVisibility(View.VISIBLE);
+        recordContainer.setVisibility(View.GONE);
+        voicenote.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                textmessageContainer.setVisibility(View.GONE);
+                recordContainer.setVisibility(View.VISIBLE);
+                launchRecord();
+                return true;
+            }
+        });
+        closeRecordContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stopRecord();
+                if (mAudioFile!=null && mAudioFile.exists()) mAudioFile.delete();
+                textmessageContainer.setVisibility(View.VISIBLE);
+                recordContainer.setVisibility(View.GONE);
+            }
+        });
+        sendRecordedAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stopRecord();
+                //PLAY RECORDED
+                textmessageContainer.setVisibility(View.VISIBLE);
+                recordContainer.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void test(){
@@ -423,5 +498,53 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
         }
     }
 
+    public void launchRecord(){
+        mAudioRecorder = AudioRecorder.getInstance();
+        mAudioFile = FilesUtils.newVoiceNote();
+        mAudioRecorder.prepareRecord(MediaRecorder.AudioSource.MIC,
+                MediaRecorder.OutputFormat.MPEG_4, MediaRecorder.AudioEncoder.AAC,
+                mAudioFile);
+        isRecording = true;
+        mAudioRecorder.startRecord();
+        launchTimeThread();
+    }
+
+    private void stopRecord(){
+        if (mAudioRecorder!=null) mAudioRecorder.stopRecord();
+        isRecording = false;
+    }
+
+    private void launchTimeThread(){
+        new Thread(new Runnable() {
+            int ttime;
+            @Override
+            public void run() {
+                while(isRecording){
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    ttime++;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String sec = String.valueOf(ttime%60);
+                            String min = String.valueOf(ttime/60);
+                            if (sec.length()==1) sec = "0"+sec;
+                            if (min.length()==1) min = "0"+min;
+                            recordedTime.setText(min+":"+sec);
+                        }
+                    });
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        recordedTime.setText("00:00");
+                    }
+                });
+            }
+        }).start();
+    }
 
 }
