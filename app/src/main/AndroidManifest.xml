@@ -27,7 +27,10 @@
         <activity android:name=".ui.activities.PhotosActivity" />
         <activity android:name=".ui.activities.VideosActivity" />
         <activity android:name=".ui.activities.AudiosActivity" />
-        <activity android:name=".ui.activities.DocumentsActivity"></activity>
+        <activity android:name=".ui.activities.DocumentsActivity" />
+        <activity android:name=".ui.activities.GalleryActivity" />
+        <activity android:name=".ui.activities.GalleryBucketActivity" />
+        <activity android:name=".ui.activities.VideoViewActivity"></activity>
     </application>
 
 </manifest>

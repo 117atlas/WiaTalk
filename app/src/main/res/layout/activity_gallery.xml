@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ensp.reseau.wiatalk.ui.activities.GalleryActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:id="@+id/toolbar"
+            android:theme="@style/Toolbar.Style"></android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="4dp"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/bottom_container">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                    android:id="@+id/send"
+                    android:src="@drawable/ic_send"
+                    android:layout_alignParentRight="true"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/number_items"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/send"
+                    android:background="@drawable/number_selected_items_bg"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_big"
+                    android:textStyle="bold"
+                    android:text="2"
+                    android:paddingTop="@dimen/padmarg_xsmall"
+                    android:paddingBottom="@dimen/padmarg_xsmall"
+                    android:paddingRight="@dimen/padmarg_small"
+                    android:paddingLeft="@dimen/padmarg_small"
+                    android:gravity="center"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:layout_toLeftOf="@id/number_items"
+                    android:layout_marginLeft="@dimen/padmarg_small"
+                    android:layout_marginRight="@dimen/padmarg_small"
+                    android:layout_alignBottom="@id/send"
+                    android:layout_alignTop="@id/send"
+                    android:paddingTop="@dimen/padmarg_xsmall"
+                    android:paddingBottom="@dimen/padmarg_xsmall"
+                    android:hint="@string/legend"
+                    android:textColor="@color/black"
+                    android:id="@+id/legend"
+                    android:maxLines="3"
+                    android:scrollbars="vertical"/>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <GridView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/bottom_container"
+            android:id="@+id/medias"
+            android:numColumns="3"
+            android:gravity="center"
+            android:horizontalSpacing="@dimen/padmarg_xsmall"
+            android:verticalSpacing="@dimen/padmarg_xsmall"
+            android:stretchMode="columnWidth"></GridView>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

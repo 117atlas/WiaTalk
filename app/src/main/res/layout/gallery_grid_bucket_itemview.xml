@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@null"
+    android:foreground="?attr/selectableItemBackground">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:clickable="false"
+        android:id="@+id/bucket_last_media"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#88000000"
+        android:paddingTop="@dimen/padmarg_small"
+        android:paddingBottom="@dimen/padmarg_small"
+        android:drawableLeft="@drawable/ic_photo_camera_white"
+        android:drawablePadding="@dimen/padmarg_small"
+        android:paddingLeft="@dimen/padmarg_medium"
+        android:id="@+id/bucket_name_image"
+        android:textColor="@color/white"
+        android:clickable="false"
+        android:textSize="@dimen/text_big"
+        android:textStyle="bold"
+        android:text="DCIM"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#88000000"
+        android:paddingTop="@dimen/padmarg_small"
+        android:paddingBottom="@dimen/padmarg_small"
+        android:drawableLeft="@drawable/ic_videocam_white"
+        android:drawablePadding="@dimen/padmarg_small"
+        android:paddingLeft="@dimen/padmarg_medium"
+        android:id="@+id/bucket_name_video"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_big"
+        android:textStyle="bold"
+        android:text="DCIM"/>
+
+</android.support.constraint.ConstraintLayout>

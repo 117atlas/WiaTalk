@@ -25,6 +25,11 @@ import java.util.Date;
 public class U {
     public static final int READ_EXTERNAL_STORAGE_REQ_PERM_CODE = 177;
 
+    public static final int SELECT_GALLERY_REQ_CODES = 223;
+    public static final int SELECT_GALLERY_REQ_CODES_2 = 222;
+    public static final int SELECT_AUDIOS_REQ_CODES = 224;
+    public static final int SELECT_DOCS_REQ_CODES = 225;
+
     public static String[] toArray(ArrayList<String> list){
         if (list==null) return null;
         String[] res = new String[list.size()];

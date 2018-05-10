@@ -75,4 +75,6 @@
     <string name="document">Document</string>
     <string name="documents_activity">Documents</string>
     <string name="audios_activity">Fichiers Audio</string>
+    <string name="gallery_name">Galerie</string>
+    <string name="legend">Un commentaire</string>
 </resources>

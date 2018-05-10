@@ -20,9 +20,11 @@ import java.io.File;
 import java.net.URI;
 
 import ensp.reseau.wiatalk.R;
+import ensp.reseau.wiatalk.U;
 import ensp.reseau.wiatalk.ui.activities.AudiosActivity;
 import ensp.reseau.wiatalk.ui.activities.DiscussionActivity;
 import ensp.reseau.wiatalk.ui.activities.DocumentsActivity;
+import ensp.reseau.wiatalk.ui.activities.GalleryBucketActivity;
 import ensp.reseau.wiatalk.ui.activities.PhotosActivity;
 import ensp.reseau.wiatalk.ui.adapters.FileChooserPhotoAdapter;
 import ensp.reseau.wiatalk.ui.adapters.ICameraHandler;
@@ -79,8 +81,8 @@ public class FileChooserBottomFragment extends BottomSheetDialogFragment {
                     } break;
                     case R.id.gallery:{
                         dismiss();
-                        Intent intent = new Intent(getContext(), PhotosActivity.class);
-                        startActivity(intent);
+                        Intent intent = new Intent(getContext(), GalleryBucketActivity.class);
+                        getActivity().startActivityForResult(intent, U.SELECT_GALLERY_REQ_CODES);
                     } break;
                     case R.id.video:{
                         dismiss();
@@ -88,11 +90,11 @@ public class FileChooserBottomFragment extends BottomSheetDialogFragment {
                     } break;
                     case R.id.audio:{
                         Intent intent = new Intent(getContext(), AudiosActivity.class);
-                        startActivity(intent);
+                        getActivity().startActivityForResult(intent, U.SELECT_AUDIOS_REQ_CODES);
                     } break;
                     case R.id.document:{
                         Intent intent = new Intent(getContext(), DocumentsActivity.class);
-                        startActivity(intent);
+                        getActivity().startActivityForResult(intent, U.SELECT_DOCS_REQ_CODES);
                     } break;
                 }
             }

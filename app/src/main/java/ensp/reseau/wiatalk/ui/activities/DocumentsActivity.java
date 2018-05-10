@@ -1,5 +1,6 @@
 package ensp.reseau.wiatalk.ui.activities;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -62,11 +63,14 @@ public class DocumentsActivity extends AppCompatActivity implements IFileChoosen
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String s = "";
+                /*String s = "";
                 for (String d: selectedDocuments) s = s + "\n" + d;
                 Toast.makeText(DocumentsActivity.this, s, Toast.LENGTH_SHORT).show();
                 Log.i("SELECTED", s);
-                onBackPressed();
+                onBackPressed();*/
+                Intent output = new Intent();
+                output.putExtra("SELECTED_DOCUMENTS", selectedDocuments);
+                setResult(RESULT_OK, output);
                 finish();
             }
         });

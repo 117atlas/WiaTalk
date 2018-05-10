@@ -397,6 +397,30 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
 
             }
         }
+        else if (requestCode == U.SELECT_GALLERY_REQ_CODES){
+            if (resultCode == RESULT_OK && data!=null){
+                String s = data.getStringExtra("LEGEND") + "\n\n";
+                ArrayList<String> selected = (ArrayList<String>) data.getSerializableExtra("SELECTED");
+                for (String ss: selected) s = s + ss + "\n";
+                Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+            }
+        }
+        else if (requestCode == U.SELECT_AUDIOS_REQ_CODES){
+            if (resultCode == RESULT_OK && data!=null){
+                String s = data.getStringExtra("AUDIOS") + "\n";
+                ArrayList<String> selected = (ArrayList<String>) data.getSerializableExtra("SELECTED_AUDIOS");
+                for (String ss: selected) s = s + ss + "\n";
+                Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+            }
+        }
+        else if (requestCode == U.SELECT_DOCS_REQ_CODES){
+            if (resultCode == RESULT_OK && data!=null){
+                String s = data.getStringExtra("DOCUMENTS") + "\n";
+                ArrayList<String> selected = (ArrayList<String>) data.getSerializableExtra("SELECTED_DOCUMENTS");
+                for (String ss: selected) s = s + ss + "\n";
+                Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 

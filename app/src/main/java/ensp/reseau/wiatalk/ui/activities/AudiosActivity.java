@@ -3,6 +3,7 @@ package ensp.reseau.wiatalk.ui.activities;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -69,11 +70,14 @@ public class AudiosActivity extends AppCompatActivity implements IFileChoosenHan
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String s = "";
+                /*String s = "";
                 for (String d: selectedAudios) s = s + "\n" + d;
                 Toast.makeText(AudiosActivity.this, s, Toast.LENGTH_SHORT).show();
                 Log.i("SELECTED", s);
-                onBackPressed();
+                onBackPressed();*/
+                Intent output = new Intent();
+                output.putExtra("SELECTED_AUDIOS", selectedAudios);
+                setResult(RESULT_OK, output);
                 finish();
             }
         });
