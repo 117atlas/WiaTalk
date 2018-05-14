@@ -28,6 +28,10 @@ public class FilesUtils {
         return Uri.fromFile(getOutputImageFile(userID));
     }
 
+    public static Uri getOutputImageFileUriForGroupCreated(int id){
+        return Uri.fromFile(getOutputImageFile(id, File.separator+"WiaTalkData"+File.separator+"GroupeCreatedpp"));
+    }
+
     public static File newVoiceNote(){
         final String parentDir = Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"WiaTalk";
         File parent = new File(parentDir);
@@ -49,6 +53,28 @@ public class FilesUtils {
                     + vn.getAbsolutePath() + " directory");
             return null;
         }
+    }
+
+    public static File getOutputImageFile(int userID, String rootFolder){
+        // External sdcard location
+        final String WiaTalkMyProfileImg = rootFolder + File.separator + "Me";
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.getRootDirectory().getAbsolutePath()),
+                WiaTalkMyProfileImg);
+        //File mediaStorageDir = new File(TopSalesProfilesImgs, LaLaLaWWorkerProfileFolder);
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d("MKDIR ERR", "Oops! Failed create "
+                        + WiaTalkMyProfileImg + " directory");
+                return null;
+            }
+        }
+        // Create a media file name
+        //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new java.util.Date());
+        File mediaFile = new File(mediaStorageDir.getPath() + File.separator
+                + String.valueOf(userID)+".jpg");
+        if (mediaFile.exists()) mediaFile.delete();
+        return mediaFile;
     }
 
     public static File getOutputImageFile(int userID){
@@ -118,8 +144,10 @@ public class FilesUtils {
         File file = new File(imageFilePath);
 
         final String WiaTalkMyProfileImg = WiaTalkProfilesImgs;
+        /*File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.getRootDirectory().getAbsolutePath()),
+                WiaTalkMyProfileImg);*/
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.getRootDirectory().getAbsolutePath()),
-                WiaTalkMyProfileImg);
+                File.separator+"WiaTalkData"+File.separator+"GroupeCreatedpp");
 
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {

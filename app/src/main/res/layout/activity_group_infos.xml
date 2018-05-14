@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ensp.reseau.wiatalk.ui.activities.ContactInfosActivity">
+    tools:context="ensp.reseau.wiatalk.ui.activities.GroupInfosActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -48,7 +48,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <android.support.v7.widget.CardView
@@ -61,57 +61,42 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <com.vanniktech.emoji.EmojiTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/username"
-                        android:gravity="center_horizontal"
-                        android:padding="@dimen/padmarg_medium"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_large"
-                        android:text="ENSP 4GI"
-                        android:background="?attr/selectableItemBackground"/>
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="1"
-                        android:paddingLeft="@dimen/padmarg_small"
-                        android:paddingRight="@dimen/padmarg_small"
-                        android:layout_marginBottom="@dimen/padmarg_small">
+                        android:weightSum="1">
 
-                        <TextView
+                        <com.vanniktech.emoji.EmojiTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:id="@+id/usermobile"
-                            android:text="697266488"
-                            android:layout_gravity="center_vertical"
-                            android:textSize="@dimen/text_big"/>
+                            android:id="@+id/group_name"
+                            android:padding="@dimen/padmarg_medium"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_large"
+                            android:text="ENSP 4GI"
+                            android:clickable="true"
+                            android:background="@null"
+                            android:foreground="?android:attr/selectableItemBackground"/>
 
                         <ImageButton
                             android:layout_width="60dp"
                             android:layout_height="wrap_content"
                             style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
-                            android:id="@+id/message"
-                            android:src="@drawable/ic_chat_grey"/>
-
-                        <ImageButton
-                            android:layout_width="60dp"
-                            android:layout_height="wrap_content"
-                            style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
-                            android:id="@+id/vocal_call"
-                            android:src="@drawable/ic_call_grey"/>
-
-                        <ImageButton
-                            android:layout_width="60dp"
-                            android:layout_height="wrap_content"
-                            style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
-                            android:id="@+id/video_call"
-                            android:src="@drawable/ic_video_call_grey"/>
+                            android:id="@+id/edit_group_name"
+                            android:src="@drawable/ic_edit"/>
 
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/group_creation_date"
+                        android:text="Cree le 20/02/2018 par Atlas"
+                        android:textSize="@dimen/text_big"
+                        android:gravity="center_horizontal"
+                        android:layout_marginBottom="@dimen/padmarg_small"/>
 
                 </LinearLayout>
 
@@ -126,17 +111,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
-                    android:id="@+id/shared_files"
-                    android:text="@string/ib_files"/>
+                    android:id="@+id/group_files"
+                    android:text="@string/group_files"/>
 
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padmarg_medium"
-                android:layout_marginBottom="@dimen/padmarg_medium"
-                android:id="@+id/common_group_container">
+                android:layout_marginTop="@dimen/padmarg_medium">
+
+                <android.support.v7.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                    android:id="@+id/add_members"
+                    android:text="@string/add_members"
+                    android:drawableLeft="@drawable/ic_group_add_blue"/>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padmarg_medium">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -147,23 +145,39 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/common_groups_label"
+                        android:text="@string/group_members_label"
                         android:layout_marginTop="@dimen/padmarg_small"
                         android:layout_marginLeft="@dimen/padmarg_small"
                         android:layout_marginRight="@dimen/padmarg_small"
                         android:layout_marginBottom="@dimen/padmarg_small"
                         android:gravity="center_horizontal"
-                        android:id="@+id/common_groups_label"/>
+                        android:id="@+id/number_members"/>
 
                     <android.support.v7.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false"
-                        android:id="@+id/common_group_list">
+                        android:id="@+id/group_members"
+                        android:nestedScrollingEnabled="false">
 
                     </android.support.v7.widget.RecyclerView>
 
                 </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padmarg_medium"
+                android:layout_marginTop="@dimen/padmarg_big">
+
+                <android.support.v7.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/quit"
+                    android:text="@string/quit_group"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                    android:textStyle="bold"/>
 
             </android.support.v7.widget.CardView>
 

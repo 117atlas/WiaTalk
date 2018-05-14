@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:weightSum="1"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="@dimen/padmarg_small"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/contact_initiales"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:background="@drawable/initiales_bg"
+            android:gravity="center"
+            android:text="MS"
+            android:textSize="@dimen/text_large"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/pp"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:paddingLeft="@dimen/padmarg_xsmall"
+        android:paddingRight="@dimen/padmarg_small"
+        android:paddingBottom="@dimen/padmarg_small"
+        android:background="@drawable/call_itview_bg">
+
+        <com.vanniktech.emoji.EmojiTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/username"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_big"
+            android:text="Samaritain Sims  ~Samar"
+            android:maxLines="1"
+            android:ellipsize="end"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/usermobile"
+            android:text="697266488"
+            android:layout_marginTop="@dimen/padmarg_small"/>
+
+    </LinearLayout>
+
+</LinearLayout>

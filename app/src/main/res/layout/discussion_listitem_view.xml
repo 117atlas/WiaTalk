@@ -7,22 +7,22 @@
     android:background="@color/white">
 
     <RelativeLayout
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_margin="@dimen/padmarg_small"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="@dimen/padmarg_xsmall"
         android:layout_marginLeft="@dimen/padmarg_xsmall"
         android:layout_gravity="center_vertical">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:id="@+id/pp"
             android:src="@drawable/ppdisc1"
             android:visibility="gone"/>
         
         <TextView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:id="@+id/discussion_initiales"
             android:textColor="@color/white"
             android:textStyle="bold"
@@ -136,7 +136,7 @@
                 android:lines="1"
                 android:ellipsize="end"
                 android:maxLength="40"
-                android:layout_marginTop="@dimen/padmarg_xsmall"
+                android:layout_marginTop="@dimen/padmarg_small"
                 android:text="Toi t'es qui? Tu veux quoi? T'etais ou??jjkjkjkjkj"
                 android:id="@+id/last_message"/>
 

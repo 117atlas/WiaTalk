@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padmarg_xsmall">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ppcontainer"
+        android:layout_centerHorizontal="true">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/pp"/>
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/discussion_initiales"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:background="@drawable/initiales_bg"
+            android:gravity="center"
+            android:text="MS" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:id="@+id/remove"
+            android:src="@drawable/ic_close_small"
+            android:background="@drawable/remove_contact_added_btn_bg"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <com.vanniktech.emoji.EmojiTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Moha la squale la banane"
+        android:gravity="center_horizontal"
+        android:id="@+id/username"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/padmarg_xsmall"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ppcontainer"
+        android:maxWidth="100dp"/>
+
+</RelativeLayout>

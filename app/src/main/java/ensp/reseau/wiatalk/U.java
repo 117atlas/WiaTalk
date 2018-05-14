@@ -18,6 +18,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+import ensp.reseau.wiatalk.ui.activities.GalleryActivity;
+
 /**
  * Created by Sim'S on 04/05/2018.
  */
@@ -37,6 +40,12 @@ public class U {
             res[i] = list.get(i);
         }
         return res;
+    }
+
+    public static void showImageAsset(Context context, String asset, ImageView imageView){
+        Glide.with(context).load("file:///android_asset/"+asset)
+                .placeholder(R.mipmap.logo).centerCrop()
+                .into(imageView);
     }
 
     public static ArrayList<String> Split(String s, char c){

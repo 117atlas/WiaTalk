@@ -35,6 +35,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/padmarg_small"
+            app:fabSize="normal"
             android:layout_marginRight="@dimen/padmarg_small"
             android:src="@drawable/ic_camera_white_48dp"
             android:id="@+id/change_pp"/>
