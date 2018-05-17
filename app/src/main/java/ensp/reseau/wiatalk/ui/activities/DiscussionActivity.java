@@ -45,6 +45,7 @@ import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
 import ensp.reseau.wiatalk.files.FilesUtils;
 import ensp.reseau.wiatalk.models.Message;
+import ensp.reseau.wiatalk.ui.UiUtils;
 import ensp.reseau.wiatalk.ui.adapters.ICameraHandler;
 import ensp.reseau.wiatalk.ui.adapters.IMessageClickHandler;
 import ensp.reseau.wiatalk.ui.adapters.MessagesAdapter;
@@ -132,7 +133,13 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                onBackPressed();
+            }
+        });
+        toolbarContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UiUtils.switchActivity(DiscussionActivity.this, GroupInfosActivity.class, false, null);
             }
         });
 
@@ -186,6 +193,12 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
                 else goDown.setVisibility(View.VISIBLE);
 
                 if ((dy>0 || dy<0) && dateIndicator.getVisibility()==View.GONE) dateIndicator.setVisibility(View.VISIBLE);
+            }
+        });
+        goDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                messages.scrollToPosition(((MessagesAdapter)messages.getAdapter()).getItemCount()-1);
             }
         });
     }
@@ -338,7 +351,40 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.reply:{
+                replyMessageContainer.setVisibility(View.VISIBLE);
+                longClickSelectedItems = new ArrayList<>();
+                longClick = false;
+                ((MessagesAdapter)messages.getAdapter()).selectItems(longClickSelectedItems);
+                onCreateOptionsMenu(activityMenu);
+            } break;
+            case R.id.copy:{
+                Toast.makeText(this, "COPY MESSAGE", Toast.LENGTH_SHORT).show();
+            } break;
+            case R.id.forward:{
+                Toast.makeText(this, "FORWARD MESSAGE", Toast.LENGTH_SHORT).show();
+            } break;
+            case R.id.delete:{
+                Toast.makeText(this, "DELETE MESSAGE", Toast.LENGTH_SHORT).show();
+            } break;
+            case R.id.app_bar_search:{
+                Toast.makeText(this, "SEARCH MESSAGE", Toast.LENGTH_SHORT).show();
+            } break;
+            case R.id.empty:{
+                Toast.makeText(this, "EMPTY DISCUSSION", Toast.LENGTH_SHORT).show();
+            } break;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deselectAll(){
+        if (longClickSelectedItems!=null && longClickSelectedItems.size()>0){
+            for (int i=0; i<longClickSelectedItems.size(); i++) {
+                System.out.println(longClickSelectedItems.get(i).intValue());
+                click(longClickSelectedItems.get(i).intValue());
+            }
+        }
     }
 
     private void menuManager(){
@@ -350,10 +396,14 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
                 public void onClick(View view) {
                     longClickSelectedItems = new ArrayList<>();
                     longClick = false;
+                    ((MessagesAdapter)messages.getAdapter()).selectItems(longClickSelectedItems);
                     onCreateOptionsMenu(activityMenu);
                 }
             });
             getMenuInflater().inflate(R.menu.discussion_menu_select, activityMenu);
+
+            if (longClickSelectedItems.size()>1) activityMenu.getItem(0).setVisible(false);
+            else activityMenu.getItem(0).setVisible(true);
         }
         else {
             toolbarContent.setVisibility(View.VISIBLE);

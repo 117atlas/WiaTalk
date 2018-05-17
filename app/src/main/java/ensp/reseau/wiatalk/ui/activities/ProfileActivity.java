@@ -26,6 +26,7 @@ import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
 import ensp.reseau.wiatalk.files.FilesUtils;
 import ensp.reseau.wiatalk.models.User;
+import ensp.reseau.wiatalk.ui.UiUtils;
 import ensp.reseau.wiatalk.ui.fragment.ChoosePpFragment;
 import ensp.reseau.wiatalk.ui.fragment.CreateGroupSetInfosFragment;
 
@@ -85,12 +86,14 @@ public class ProfileActivity extends AppCompatActivity implements ChoosePpFragme
             @Override
             public void onClick(View view) {
                 Toast.makeText(ProfileActivity.this, "EDIT USERNAME", Toast.LENGTH_SHORT).show();
+                UiUtils.switchActivity(ProfileActivity.this, EditPseudoActivity.class, true, null);
             }
         });
         editUserMobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(ProfileActivity.this, "EDIT USERMOBILE", Toast.LENGTH_SHORT).show();
+                UiUtils.switchActivity(ProfileActivity.this, EditMobileActivity.class, true, null);
             }
         });
     }

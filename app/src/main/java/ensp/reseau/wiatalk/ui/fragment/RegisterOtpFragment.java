@@ -146,7 +146,7 @@ public class RegisterOtpFragment extends Fragment {
     }
 
     private void initTimeThread(){
-        requestSms.setEnabled(false);
+        requestSms.setClickable(false);
         timeThread = new Thread(new Runnable() {
             private long oldTime = time;
             @Override
@@ -175,7 +175,7 @@ public class RegisterOtpFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            requestSms.setEnabled(true);
+                            requestSms.setClickable(true);
                             requestSms.setText(getString(R.string.request_sms));
                         }
                     });

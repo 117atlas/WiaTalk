@@ -15,6 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ensp.reseau.wiatalk.R;
+import ensp.reseau.wiatalk.models.User;
 import ensp.reseau.wiatalk.ui.activities.EditMobileActivity;
 
 /**
@@ -67,9 +68,16 @@ public class EditMobileFragment extends Fragment {
                     return;
                 }
 
+                User user = ((EditMobileActivity)getActivity()).getUser();
+                if (!oldMobile.getText().toString().equals(user.getMobile())){
+                    oldMobile.setError(getString(R.string.incorrect_mobile_num));
+                    return;
+                }
+
                 Toast.makeText(getContext(), "EDIT PHONE", Toast.LENGTH_SHORT).show();
 
                 //NEXT
+                next();
             }
         });
     }

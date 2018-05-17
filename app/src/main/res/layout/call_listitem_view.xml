@@ -40,18 +40,28 @@
         android:background="@drawable/call_itview_bg">
 
         <ImageButton
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:src="@drawable/ic_call_48dp"
+            android:src="@drawable/ic_call_orange"
             style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
             android:id="@+id/call" />
+
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/call"
+            android:src="@drawable/ic_video_call_orange"
+            style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+            android:id="@+id/video_call" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_toLeftOf="@id/call"
+            android:layout_toLeftOf="@id/video_call"
             android:layout_centerVertical="true">
 
             <TextView
@@ -69,7 +79,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/padmarg_small">
+                android:layout_marginTop="@dimen/padmarg_small"
+                android:weightSum="1">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -77,14 +88,23 @@
                     android:id="@+id/call_type"
                     android:src="@drawable/ic_call_made"/>
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/call_mode"
+                    android:layout_marginLeft="@dimen/padmarg_xsmall"
+                    android:src="@drawable/ic_call_grey_small"/>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/date"
-                    android:text="Mardi 14/05 - 17:07"
-                    android:layout_marginLeft="@dimen/padmarg_small"
+                    android:textSize="@dimen/text_small"
+                    android:text="Mardi 14/05 - 17:07 "
+                    android:layout_marginLeft="@dimen/padmarg_xsmall"
                     android:lines="1"
-                    android:ellipsize="end"/>
+                    android:ellipsize="end"
+                    android:layout_weight="1"/>
 
             </LinearLayout>
 

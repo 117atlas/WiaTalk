@@ -77,6 +77,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                     }
                     Toast.makeText(CreateGroupActivity.this, toasts, Toast.LENGTH_LONG).show();
                     Log.i("TOASTS", toasts);
+                    finish();
                 }
             }
         });

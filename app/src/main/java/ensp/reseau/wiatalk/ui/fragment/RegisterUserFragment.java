@@ -207,7 +207,7 @@ public class RegisterUserFragment extends Fragment implements ChoosePpFragment.I
     }
 
     public void next(){
-        ((RegisterActivity)getActivity()).swipe(3);
+        ((RegisterActivity)getActivity()).swipe(4);
     }
 
     private void simulateProcessing(){

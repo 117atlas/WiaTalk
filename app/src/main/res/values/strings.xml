@@ -115,4 +115,11 @@
     <string name="edit_mobile">Modifier le numero de telephone</string>
     <string name="empty_old_mobile">Entrez votre ancien numero de telephone</string>
     <string name="empty_new_mobile">Veillez entrer votre nouveau numero de telephone</string>
+    <string name="incorrect_mobile_num">Ce numero de telephone n\'est pas le votre</string>
+    <string name="view_profile">Voir le profile de ????</string>
+    <string name="nominate_admin">Nommer ???? en tant qu\'administrateur</string>
+    <string name="remove_member">Retirer ???? du groupe</string>
+    <string name="message_to">Message a ????</string>
+    <string name="vocal_call_to">Appel vocal a ????</string>
+    <string name="video_call_to">Appel Video a ????</string>
 </resources>

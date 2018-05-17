@@ -46,6 +46,7 @@ public class EditPseudoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(EditPseudoActivity.this, "NEXT", Toast.LENGTH_SHORT).show();
+                onBackPressed();
             }
         });
         emoji.setOnClickListener(new View.OnClickListener() {

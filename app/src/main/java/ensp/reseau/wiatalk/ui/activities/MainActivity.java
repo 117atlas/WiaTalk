@@ -25,6 +25,8 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import ensp.reseau.wiatalk.R;
+import ensp.reseau.wiatalk.U;
+import ensp.reseau.wiatalk.ui.UiUtils;
 import ensp.reseau.wiatalk.ui.fragment.CallsFragment;
 import ensp.reseau.wiatalk.ui.fragment.DiscussionsFragment;
 
@@ -87,18 +89,22 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.myprofile : {
                         Toast.makeText(MainActivity.this, "My profile", Toast.LENGTH_SHORT).show();
+                        UiUtils.switchActivity(MainActivity.this, ProfileActivity.class, false, null);
                     } break;
                     case R.id.newgroup : {
                         Toast.makeText(MainActivity.this, "New Group", Toast.LENGTH_SHORT).show();
+                        UiUtils.switchActivity(MainActivity.this, CreateGroupActivity.class, false, null);
                     } break;
                     case R.id.contacts : {
                         Toast.makeText(MainActivity.this, "Contacts", Toast.LENGTH_SHORT).show();
+                        UiUtils.switchActivity(MainActivity.this, ContactsActivity.class, false, null);
                     } break;
                     case R.id.markedmessages : {
                         Toast.makeText(MainActivity.this, "Marked Messages", Toast.LENGTH_SHORT).show();
                     } break;
                     case R.id.settings : {
                         Toast.makeText(MainActivity.this, "Settings", Toast.LENGTH_SHORT).show();
+                        UiUtils.switchActivity(MainActivity.this, SettingsActivity.class, false, null);
                     } break;
                     case R.id.share : {
                         Toast.makeText(MainActivity.this, "Share", Toast.LENGTH_SHORT).show();

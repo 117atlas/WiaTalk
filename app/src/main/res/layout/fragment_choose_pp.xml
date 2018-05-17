@@ -2,6 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentLeft="true"
     android:orientation="vertical"
     android:padding="@dimen/padmarg_small"
     tools:context="ensp.reseau.wiatalk.ui.fragment.ChoosePpFragment">

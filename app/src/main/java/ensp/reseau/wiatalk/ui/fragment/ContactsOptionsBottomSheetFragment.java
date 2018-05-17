@@ -4,6 +4,7 @@ package ensp.reseau.wiatalk.ui.fragment;
 import android.app.Application;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
@@ -11,11 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ensp.reseau.wiatalk.R;
+import ensp.reseau.wiatalk.models.User;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ContactsOptionsBottomSheetFragment extends Fragment {
+public class ContactsOptionsBottomSheetFragment extends BottomSheetDialogFragment {
 
     private AppCompatButton message;
     private AppCompatButton vocalCall;
@@ -27,6 +29,7 @@ public class ContactsOptionsBottomSheetFragment extends Fragment {
 
     private int position;
     private IOptionsChoosen iOptionsChoosen;
+    private User user;
 
     public ContactsOptionsBottomSheetFragment() {
         // Required empty public constructor
@@ -43,10 +46,11 @@ public class ContactsOptionsBottomSheetFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_contacts_options_bottom_sheet, container, false);
     }
 
-    public static ContactsOptionsBottomSheetFragment newInstance(int position, IOptionsChoosen iOptionsChoosen){
+    public static ContactsOptionsBottomSheetFragment newInstance(int position, IOptionsChoosen iOptionsChoosen, User user){
         ContactsOptionsBottomSheetFragment fragment = new ContactsOptionsBottomSheetFragment();
         fragment.position = position;
         fragment.iOptionsChoosen = iOptionsChoosen;
+        fragment.user = user;
         return fragment;
     }
 
@@ -56,6 +60,11 @@ public class ContactsOptionsBottomSheetFragment extends Fragment {
         message = view.findViewById(R.id.message);
         vocalCall = view.findViewById(R.id.vocal_call);
         videoCall = view.findViewById(R.id.video_call);
+
+        String userText = user.getContactName()==null?user.getMobile():user.getContactName();
+        message.setText(getString(R.string.message_to).replace("????", userText));
+        vocalCall.setText(getString(R.string.vocal_call_to).replace("????", userText));
+        videoCall.setText(getString(R.string.video_call_to).replace("????", userText));
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override

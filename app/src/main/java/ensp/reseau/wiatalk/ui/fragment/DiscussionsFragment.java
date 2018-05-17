@@ -16,6 +16,9 @@ import android.widget.Toast;
 
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.models.Discussion;
+import ensp.reseau.wiatalk.ui.IntentExtra;
+import ensp.reseau.wiatalk.ui.UiUtils;
+import ensp.reseau.wiatalk.ui.activities.ContactsActivity;
 import ensp.reseau.wiatalk.ui.adapters.DiscussionsAdapter;
 
 /**
@@ -52,6 +55,7 @@ public class DiscussionsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(), "NEW MESSAGE", Toast.LENGTH_SHORT).show();
+                UiUtils.switchActivity(getActivity(), ContactsActivity.class, false, new IntentExtra("PURPOSE", ContactsActivity.PURPOSE_MESSAGE));
             }
         });
         thereAreMessages();

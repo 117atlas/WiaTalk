@@ -27,12 +27,17 @@ public class EditMobileActivity extends AppCompatActivity {
 
     private User user;
 
+    public User getUser() {
+        return user;
+    }
+
     private int currentPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_mobile);
+        testUser();
         toolbar = findViewById(R.id.toolbar);
         viewPager = findViewById(R.id.viewpager);
         setSupportActionBar(toolbar);
@@ -55,6 +60,7 @@ public class EditMobileActivity extends AppCompatActivity {
         }
         if (dest==2) {
             Toast.makeText(this, "NEXT ACTIVITY, EDIT MOBILE DONE", Toast.LENGTH_SHORT).show();
+            onBackPressed();
         }
     }
 
@@ -83,5 +89,12 @@ public class EditMobileActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    private void testUser(){
+        user = new User();
+        user.setId("0"); user.setMobile("697266488");
+        user.setPseudo("samar"); user.setContactName("Samaritain Sims");
+        user.setPp("pp2.jpg");
     }
 }

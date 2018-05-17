@@ -9,21 +9,32 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.models.User;
 import ensp.reseau.wiatalk.models.utils.Contact;
+import ensp.reseau.wiatalk.ui.UiUtils;
 import ensp.reseau.wiatalk.ui.adapters.ContactsAdapter;
 import ensp.reseau.wiatalk.ui.adapters.IPhoneContactsCharged;
+import ensp.reseau.wiatalk.ui.fragment.ContactsOptionsBottomSheetFragment;
 
-public class ContactsActivity extends AppCompatActivity {
+public class ContactsActivity extends AppCompatActivity implements ContactsOptionsBottomSheetFragment.IOptionsChoosen{
+
+    public static final int NO_PURPOSE = 0;
+    public static final int PURPOSE_MESSAGE = 1;
+    public static final int PURPOSE_VOCAL_CALL = 2;
+    public static final int PURPOSE_VIDEO_CALL = 3;
+
     private Toolbar toolbar;
     private AppCompatButton inviteContacts;
     private LinearLayout noContactsContainer;
     private LinearLayout contactsListContainer;
     private RecyclerView contacts;
+
+    private int purpose;
 
     private ContactsAdapter contactsAdapter;
 
@@ -31,6 +42,9 @@ public class ContactsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
+
+        purpose = getIntent().getIntExtra("PURPOSE", NO_PURPOSE);
+
         initializeWidgets();
     }
 
@@ -57,7 +71,7 @@ public class ContactsActivity extends AppCompatActivity {
             }
         });
         contacts.setLayoutManager(new LinearLayoutManager(this));
-        contactsAdapter = new ContactsAdapter(this, ContactsAdapter.TYPE_LIST_CONTACTS_USERS, null);
+        contactsAdapter = new ContactsAdapter(this, ContactsAdapter.TYPE_LIST_CONTACTS_USERS, null, purpose);
         contacts.setAdapter(contactsAdapter);
         test();
     }
@@ -74,5 +88,20 @@ public class ContactsActivity extends AppCompatActivity {
                 contactsAdapter.setUsers(users);
             }
         });
+    }
+
+    @Override
+    public void onOptionChoosen(int option) {
+        switch (option){
+            case ContactsOptionsBottomSheetFragment.OPTION_MESSAGE:{
+                UiUtils.switchActivity(this, DiscussionActivity.class, true, null);
+            } break;
+            case ContactsOptionsBottomSheetFragment.OPTION_VOCAL_CALL:{
+                Toast.makeText(this, "VOCAL CALL", Toast.LENGTH_SHORT).show();
+            } break;
+            case ContactsOptionsBottomSheetFragment.OPTION_VIDEO_CALL:{
+                Toast.makeText(this, "VIDEO CALL", Toast.LENGTH_SHORT).show();
+            } break;
+        }
     }
 }

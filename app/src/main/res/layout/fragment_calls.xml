@@ -12,7 +12,8 @@
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/calls_list">
+            android:id="@+id/calls_list"
+            android:nestedScrollingEnabled="false">
 
         </android.support.v7.widget.RecyclerView>
 
@@ -47,5 +48,17 @@
         android:layout_marginRight="@dimen/padmarg_medium"
         android:id="@+id/newcall"
         android:src="@drawable/ic_call_white"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:fabSize="normal"
+        android:layout_alignParentRight="true"
+        android:layout_above="@id/newcall"
+        android:layout_marginBottom="@dimen/padmarg_medium"
+        android:layout_marginRight="@dimen/padmarg_medium"
+        android:id="@+id/new_videocall"
+        android:src="@drawable/ic_video_call_white"/>
 
 </RelativeLayout>

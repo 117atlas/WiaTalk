@@ -83,7 +83,8 @@ public class EditMobileOtpFragment extends Fragment {
                     return;
                 }
                 //VERIFYOTP ET NEXT
-                simulateProcessing();
+                //simulateProcessing();
+                next();
             }
         });
 

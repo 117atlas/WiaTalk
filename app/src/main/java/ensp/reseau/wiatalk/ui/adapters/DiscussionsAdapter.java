@@ -2,6 +2,7 @@ package ensp.reseau.wiatalk.ui.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -20,7 +21,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
 import ensp.reseau.wiatalk.models.Discussion;
+import ensp.reseau.wiatalk.models.Group;
+import ensp.reseau.wiatalk.models.User;
+import ensp.reseau.wiatalk.ui.UiUtils;
+import ensp.reseau.wiatalk.ui.activities.DiscussionActivity;
 import ensp.reseau.wiatalk.ui.fragment.DiscussionOptionsFragment;
+import ensp.reseau.wiatalk.ui.fragment.ViewPhotoFragment;
 
 /**
  * Created by Sim'S on 07/05/2018.
@@ -117,6 +123,7 @@ public class DiscussionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(context, "CLICK", Toast.LENGTH_SHORT).show();
+                    UiUtils.switchActivity(((AppCompatActivity)context), DiscussionActivity.class, false, null);
                 }
             });
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -125,6 +132,20 @@ public class DiscussionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     DiscussionOptionsFragment fragment = DiscussionOptionsFragment.newInstance(DiscussionsAdapter.this, currentPosition);
                     fragment.show(((AppCompatActivity)context).getSupportFragmentManager(), DiscussionOptionsFragment.class.getSimpleName());
                     return false;
+                }
+            });
+
+            pp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    double rand = Math.random();
+                    Group group = null; User user = null;
+                    if (rand>0.5) {group = new Group(); group.setNom("Gro"); group.setCreationDate(SystemClock.currentThreadTimeMillis()); group.setCreatorId("0"); group.setPp("pp5.jpg"); group.setId("0"); group.setType(Group.TYPE_GROUP);}
+                    else user = new User("id", "697266488", "Samar", "pp3.jpg");
+
+                    ViewPhotoFragment viewPhotoFragment = ViewPhotoFragment.newInstance(group, user);
+                    viewPhotoFragment.show(((AppCompatActivity)context).getSupportFragmentManager(), ViewPhotoFragment.class.getSimpleName());
                 }
             });
         }

@@ -17,6 +17,9 @@ import android.widget.Toast;
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.models.Call;
 import ensp.reseau.wiatalk.models.Discussion;
+import ensp.reseau.wiatalk.ui.IntentExtra;
+import ensp.reseau.wiatalk.ui.UiUtils;
+import ensp.reseau.wiatalk.ui.activities.ContactsActivity;
 import ensp.reseau.wiatalk.ui.adapters.CallsAdapter;
 import ensp.reseau.wiatalk.ui.adapters.DiscussionsAdapter;
 
@@ -29,6 +32,7 @@ public class CallsFragment extends Fragment {
     private RecyclerView callsList;
     private RelativeLayout noCallsContainer;
     private FloatingActionButton newCall;
+    private FloatingActionButton newVideoCall;
 
     public CallsFragment() {
         // Required empty public constructor
@@ -49,11 +53,20 @@ public class CallsFragment extends Fragment {
         callsList = view.findViewById(R.id.calls_list);
         noCallsContainer = view.findViewById(R.id.no_calls_container);
         newCall = view.findViewById(R.id.newcall);
+        newVideoCall = view.findViewById(R.id.new_videocall);
 
         newCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(), "NEW CALL", Toast.LENGTH_SHORT).show();
+                UiUtils.switchActivity(getActivity(), ContactsActivity.class, false, new IntentExtra("PURPOSE", ContactsActivity.PURPOSE_VOCAL_CALL));
+            }
+        });
+        newVideoCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "NEW VIDEO CALL", Toast.LENGTH_SHORT).show();
+                UiUtils.switchActivity(getActivity(), ContactsActivity.class, false, new IntentExtra("PURPOSE", ContactsActivity.PURPOSE_VIDEO_CALL));
             }
         });
         thereAreCalls();
@@ -74,7 +87,7 @@ public class CallsFragment extends Fragment {
         CallsAdapter adapter = new CallsAdapter(getContext());
         callsList.setLayoutManager(new LinearLayoutManager(getContext()));
         callsList.setAdapter(adapter);
-        adapter.setList(Call.random(5));
+        adapter.setList(Call.random(18));
     }
 
 }

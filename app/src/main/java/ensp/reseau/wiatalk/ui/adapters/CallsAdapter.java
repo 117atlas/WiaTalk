@@ -2,6 +2,7 @@ package ensp.reseau.wiatalk.ui.adapters;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
 import ensp.reseau.wiatalk.models.Call;
+import ensp.reseau.wiatalk.models.User;
+import ensp.reseau.wiatalk.ui.fragment.ViewPhotoFragment;
 
 import static android.view.View.GONE;
 
@@ -68,22 +71,41 @@ public class CallsAdapter extends RecyclerView.Adapter<CallsAdapter.CallViewHold
         private ImageView type;
         private TextView date;
         private ImageButton call;
+        private ImageView mode;
+        private ImageButton videoCall;
 
         private int currentPosition;
 
         public CallViewHolder(View itemView) {
             super(itemView);
+
             pp = itemView.findViewById(R.id.pp);
             initiales = itemView.findViewById(R.id.discussion_initiales);
             discName = itemView.findViewById(R.id.contact_name);
             type = itemView.findViewById(R.id.call_type);
             date = itemView.findViewById(R.id.date);
             call = itemView.findViewById(R.id.call);
+            mode = itemView.findViewById(R.id.call_mode);
+            videoCall = itemView.findViewById(R.id.video_call);
 
             call.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(context, "Call", Toast.LENGTH_SHORT).show();
+                }
+            });
+            videoCall.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "Video Call", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            pp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ViewPhotoFragment viewPhotoFragment = ViewPhotoFragment.newInstance(null, new User("id", "697266488", "Samar", "pp3.jpg"));
+                    viewPhotoFragment.show(((AppCompatActivity)context).getSupportFragmentManager(), ViewPhotoFragment.class.getSimpleName());
                 }
             });
         }
