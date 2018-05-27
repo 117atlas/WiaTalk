@@ -32,7 +32,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
 import ensp.reseau.wiatalk.files.FilesUtils;
-import ensp.reseau.wiatalk.models.User;
+import ensp.reseau.wiatalk.tmodels.User;
 import ensp.reseau.wiatalk.ui.activities.CreateGroupActivity;
 import ensp.reseau.wiatalk.ui.adapters.ContactsAdapter;
 

@@ -1,4 +1,4 @@
-package ensp.reseau.wiatalk.models.utils;
+package ensp.reseau.wiatalk.tmodels.utils;
 
 /**
  * Created by Sim'S on 09/05/2018.

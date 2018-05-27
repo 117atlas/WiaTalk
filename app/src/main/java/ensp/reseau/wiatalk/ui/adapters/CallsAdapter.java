@@ -1,7 +1,6 @@
 package ensp.reseau.wiatalk.ui.adapters;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,17 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
-import ensp.reseau.wiatalk.models.Call;
-import ensp.reseau.wiatalk.models.User;
+import ensp.reseau.wiatalk.tmodels.Call;
+import ensp.reseau.wiatalk.tmodels.User;
 import ensp.reseau.wiatalk.ui.fragment.ViewPhotoFragment;
-
-import static android.view.View.GONE;
 
 /**
  * Created by Sim'S on 07/05/2018.

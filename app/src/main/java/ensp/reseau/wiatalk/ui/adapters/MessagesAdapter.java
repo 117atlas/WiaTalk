@@ -3,15 +3,12 @@ package ensp.reseau.wiatalk.ui.adapters;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import java.util.ArrayList;
 
 import ensp.reseau.wiatalk.R;
-import ensp.reseau.wiatalk.models.Message;
+import ensp.reseau.wiatalk.tmodels.Message;
 
 /**
  * Created by Sim'S on 08/05/2018.

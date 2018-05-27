@@ -2,28 +2,20 @@ package ensp.reseau.wiatalk.ui.fragment;
 
 
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import ensp.reseau.wiatalk.R;
-import ensp.reseau.wiatalk.models.User;
+import ensp.reseau.wiatalk.tmodels.User;
 import ensp.reseau.wiatalk.ui.activities.CreateGroupActivity;
 import ensp.reseau.wiatalk.ui.adapters.ContactsAdapter;
 import ensp.reseau.wiatalk.ui.adapters.ContactsForAddInGroupAdapter;

@@ -1,4 +1,4 @@
-package ensp.reseau.wiatalk.models;
+package ensp.reseau.wiatalk.tmodels;
 
 import java.util.ArrayList;
 

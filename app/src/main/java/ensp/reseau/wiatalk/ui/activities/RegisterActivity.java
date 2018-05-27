@@ -1,6 +1,5 @@
 package ensp.reseau.wiatalk.ui.activities;
 
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -14,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ensp.reseau.wiatalk.R;
+import ensp.reseau.wiatalk.localstorage.LocalStorageUser;
+import ensp.reseau.wiatalk.model.User;
 import ensp.reseau.wiatalk.ui.UiUtils;
 import ensp.reseau.wiatalk.ui.UnSwipeableViewPager;
 import ensp.reseau.wiatalk.ui.fragment.RegisterMobileFragment;
@@ -29,6 +30,25 @@ public class RegisterActivity extends AppCompatActivity {
     private RegisterOtpFragment otpFragment;
     private RegisterUserFragment userFragment;
     private RegisterRestoreFragment restoreFragment;
+
+    private String mobile = "";
+    private User finalUser;
+
+    public User getFinalUser() {
+        return finalUser;
+    }
+
+    public void setFinalUser(User finalUser) {
+        this.finalUser = finalUser;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +119,17 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void swipe(int dest){
-        if (dest<4) viewPager.setCurrentItem(dest);
-        else UiUtils.switchActivity(this, MainActivity.class, true, null);
+        if (dest<4) {
+            viewPager.setCurrentItem(dest);
+            if (dest==2) userFragment._bind();
+        }
+        else {
+            LocalStorageUser.storeUser(finalUser, this, true);
+            UiUtils.switchActivity(this, MainActivity.class, true, null);
+        }
+    }
+
+    interface IUserStored{
+        public void onUserStored();
     }
 }

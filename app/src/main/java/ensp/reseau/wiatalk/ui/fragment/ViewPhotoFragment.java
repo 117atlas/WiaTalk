@@ -16,8 +16,8 @@ import android.widget.Toast;
 
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
-import ensp.reseau.wiatalk.models.Group;
-import ensp.reseau.wiatalk.models.User;
+import ensp.reseau.wiatalk.tmodels.Group;
+import ensp.reseau.wiatalk.tmodels.User;
 import ensp.reseau.wiatalk.ui.UiUtils;
 import ensp.reseau.wiatalk.ui.activities.ContactInfosActivity;
 import ensp.reseau.wiatalk.ui.activities.DiscussionActivity;

@@ -21,8 +21,8 @@ import com.vanniktech.emoji.EmojiTextView;
 
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
-import ensp.reseau.wiatalk.models.Group;
-import ensp.reseau.wiatalk.models.User;
+import ensp.reseau.wiatalk.tmodels.Group;
+import ensp.reseau.wiatalk.tmodels.User;
 import ensp.reseau.wiatalk.ui.adapters.GroupSmallAdapter;
 
 public class ContactInfosActivity extends AppCompatActivity {

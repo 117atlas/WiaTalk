@@ -15,7 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ensp.reseau.wiatalk.R;
-import ensp.reseau.wiatalk.models.User;
+import ensp.reseau.wiatalk.tmodels.User;
 import ensp.reseau.wiatalk.ui.activities.EditMobileActivity;
 
 /**

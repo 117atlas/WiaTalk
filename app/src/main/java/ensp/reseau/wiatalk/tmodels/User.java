@@ -1,4 +1,4 @@
-package ensp.reseau.wiatalk.models;
+package ensp.reseau.wiatalk.tmodels;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -20,6 +20,7 @@ public class User {
     private String pseudo;
     private String pp;
     private String contactName;
+    private boolean active;
 
     public String getContactName() {
         return contactName;
@@ -37,6 +38,14 @@ public class User {
         this.mobile = mobile;
         this.pseudo = pseudo;
         this.pp = pp;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getId() {

@@ -1,16 +1,11 @@
 package ensp.reseau.wiatalk.ui.activities;
 
-import android.Manifest;
 import android.content.ContentResolver;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,15 +15,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
-import ensp.reseau.wiatalk.models.utils.Audio;
+import ensp.reseau.wiatalk.tmodels.utils.Audio;
 import ensp.reseau.wiatalk.ui.adapters.AudiosAdapter;
-import ensp.reseau.wiatalk.ui.adapters.DocumentsAdapter;
 import ensp.reseau.wiatalk.ui.adapters.IFileChoosenHandler;
 
 public class AudiosActivity extends AppCompatActivity implements IFileChoosenHandler{

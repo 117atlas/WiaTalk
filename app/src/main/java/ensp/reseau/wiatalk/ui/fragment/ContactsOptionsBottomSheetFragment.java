@@ -1,7 +1,6 @@
 package ensp.reseau.wiatalk.ui.fragment;
 
 
-import android.app.Application;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -12,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ensp.reseau.wiatalk.R;
-import ensp.reseau.wiatalk.models.User;
+import ensp.reseau.wiatalk.tmodels.User;
 
 /**
  * A simple {@link Fragment} subclass.

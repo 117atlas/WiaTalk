@@ -15,13 +15,12 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
-import ensp.reseau.wiatalk.models.utils.Document;
+import ensp.reseau.wiatalk.tmodels.utils.Document;
 import ensp.reseau.wiatalk.ui.adapters.DocumentsAdapter;
 import ensp.reseau.wiatalk.ui.adapters.IFileChoosenHandler;
 

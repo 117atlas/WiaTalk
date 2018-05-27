@@ -9,12 +9,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import ensp.reseau.wiatalk.R;
-import ensp.reseau.wiatalk.models.User;
-import ensp.reseau.wiatalk.ui.UiUtils;
+import ensp.reseau.wiatalk.tmodels.User;
 import ensp.reseau.wiatalk.ui.UnSwipeableViewPager;
 import ensp.reseau.wiatalk.ui.adapters.ViewPagerAdapter;
-import ensp.reseau.wiatalk.ui.fragment.CreateGroupAddMembersFragment;
-import ensp.reseau.wiatalk.ui.fragment.CreateGroupSetInfosFragment;
 import ensp.reseau.wiatalk.ui.fragment.EditMobileFragment;
 import ensp.reseau.wiatalk.ui.fragment.EditMobileOtpFragment;
 

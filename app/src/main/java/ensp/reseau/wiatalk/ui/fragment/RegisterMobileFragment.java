@@ -1,6 +1,7 @@
 package ensp.reseau.wiatalk.ui.fragment;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,17 +9,25 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ensp.reseau.wiatalk.R;
+import ensp.reseau.wiatalk.network.BaseResponse;
+import ensp.reseau.wiatalk.network.NetworkAPI;
+import ensp.reseau.wiatalk.network.UserInterface;
 import ensp.reseau.wiatalk.ui.SimulateProcessing;
 import ensp.reseau.wiatalk.ui.activities.RegisterActivity;
 import ensp.reseau.wiatalk.ui.alerts.ConfirmMobile;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -126,7 +135,7 @@ public class RegisterMobileFragment extends Fragment implements ConfirmMobile.IC
 
     @Override
     public void confirmMobile(boolean confirm) {
-        if (confirm) simulateProcessing();
+        if (confirm) /*simulateProcessing();*/ registerMobile();
     }
 
     public void next(){
@@ -135,5 +144,38 @@ public class RegisterMobileFragment extends Fragment implements ConfirmMobile.IC
 
     private void simulateProcessing(){
         new SimulateProcessing(getContext(), this).execute();
+    }
+
+    private void registerMobile(){
+        UserInterface userInterface = NetworkAPI.getClient().create(UserInterface.class);
+        Call<UserInterface.GetUserResponse> registerMobileCall = userInterface.registerMobile(mobile.getText().toString().replace("-", ""));
+        final ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setCancelable(false);
+        progressDialog.setIndeterminate(true);
+        progressDialog.show();
+        registerMobileCall.enqueue(new Callback<UserInterface.GetUserResponse>() {
+            @Override
+            public void onResponse(Call<UserInterface.GetUserResponse> call, Response<UserInterface.GetUserResponse> response) {
+                if (progressDialog!=null && progressDialog.isShowing()) progressDialog.dismiss();
+                if (response.body()!=null){
+                    Log.d(RegisterMobileFragment.class.getSimpleName(), response.body().getMessage() + " --- " + response.body().isError());
+                    if (response.body().isError()){
+                        Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        ((RegisterActivity)getActivity()).setMobile(mobile.getText().toString().replace("-", ""));
+                        ((RegisterActivity)getActivity()).setFinalUser(response.body().getUser());
+                        next();
+                    }
+                }
+                else Log.d(RegisterMobileFragment.class.getSimpleName(), "Response is empty");
+            }
+
+            @Override
+            public void onFailure(Call<UserInterface.GetUserResponse> call, Throwable t) {
+                if (progressDialog!=null && progressDialog.isShowing()) progressDialog.dismiss();
+                Log.d(RegisterMobileFragment.class.getSimpleName(), t.getMessage()+"");
+            }
+        });
     }
 }

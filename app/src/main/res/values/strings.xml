@@ -122,4 +122,7 @@
     <string name="message_to">Message a ????</string>
     <string name="vocal_call_to">Appel vocal a ????</string>
     <string name="video_call_to">Appel Video a ????</string>
+    <string name="pleasewait">Please wait</string>
+    <string name="init_app">Initialisation de l\'application</string>
+    <string name="read_contacts_permissions_denied">Permissions refusee lecture de contacts</string>
 </resources>

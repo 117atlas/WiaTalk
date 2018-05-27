@@ -1,12 +1,7 @@
 package ensp.reseau.wiatalk.ui.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +14,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
-import ensp.reseau.wiatalk.models.Group;
-import ensp.reseau.wiatalk.models.User;
+import ensp.reseau.wiatalk.tmodels.Group;
 
 /**
  * Created by Sim'S on 14/05/2018.

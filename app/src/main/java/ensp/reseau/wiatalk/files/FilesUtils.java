@@ -32,6 +32,31 @@ public class FilesUtils {
         return Uri.fromFile(getOutputImageFile(id, File.separator+"WiaTalkData"+File.separator+"GroupeCreatedpp"));
     }
 
+    public static Uri getMyPpUri(String id, Context context){
+        return Uri.fromFile(getMyPpFile(id, context));
+    }
+
+    public static File getMyPpFile(String id, Context context){
+        // External sdcard location
+        final String WiaTalkMyPpImg =  File.separator + "MyPp";
+        File mediaStorageDir = new File(context.getFilesDir(), WiaTalkMyPpImg);
+        //File mediaStorageDir = new File(TopSalesProfilesImgs, LaLaLaWWorkerProfileFolder);
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d("MKDIR ERR", "Oops! Failed create "
+                        + WiaTalkMyPpImg + " directory");
+                return null;
+            }
+        }
+        // Create a media file name
+        //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new java.util.Date());
+        File mediaFile = new File(mediaStorageDir.getPath() + File.separator
+                + String.valueOf(id)+".jpg");
+        if (mediaFile.exists()) mediaFile.delete();
+        return mediaFile;
+    }
+
     public static File newVoiceNote(){
         final String parentDir = Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"WiaTalk";
         File parent = new File(parentDir);
@@ -158,6 +183,39 @@ public class FilesUtils {
         }
 
         File copy = new File(mediaStorageDir.getPath()+File.separator+userID+".jpg");
+        if (copy.exists()) copy.delete();
+        if (!copy.exists()) copy.createNewFile();
+
+        FileInputStream fis = new FileInputStream(file);
+        FileOutputStream fos = new FileOutputStream(copy);
+        byte[] bytes = new byte[1024];
+        int bytesRead = 0;
+        try{
+            while ((bytesRead = fis.read(bytes)) > 0){
+                fos.write(bytes, 0, bytesRead);
+            }
+        } finally {
+            fis.close();
+            fos.close();
+        }
+        return copy.getPath();
+    }
+
+    public static String copyToMyPp(String imageFilePath, String id, Context context) throws FileNotFoundException, IOException {
+        File file = new File(imageFilePath);
+
+        final String WiaTalkMyPpImg =  File.separator + "MyPp";
+        File mediaStorageDir = new File(context.getFilesDir(), WiaTalkMyPpImg);
+
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d("MKDIR ERR", "Oops! Failed create "
+                        + WiaTalkMyPpImg + " directory");
+                return null;
+            }
+        }
+
+        File copy = new File(mediaStorageDir.getPath()+File.separator+id+".jpg");
         if (copy.exists()) copy.delete();
         if (!copy.exists()) copy.createNewFile();
 

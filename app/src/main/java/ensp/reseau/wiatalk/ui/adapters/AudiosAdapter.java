@@ -1,8 +1,6 @@
 package ensp.reseau.wiatalk.ui.adapters;
 
-import android.Manifest;
 import android.content.Context;
-import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ensp.reseau.wiatalk.R;
-import ensp.reseau.wiatalk.models.utils.Audio;
+import ensp.reseau.wiatalk.tmodels.utils.Audio;
 
 /**
  * Created by Sim'S on 09/05/2018.

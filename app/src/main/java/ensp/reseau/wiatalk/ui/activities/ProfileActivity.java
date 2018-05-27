@@ -25,10 +25,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
 import ensp.reseau.wiatalk.files.FilesUtils;
-import ensp.reseau.wiatalk.models.User;
+import ensp.reseau.wiatalk.tmodels.User;
 import ensp.reseau.wiatalk.ui.UiUtils;
 import ensp.reseau.wiatalk.ui.fragment.ChoosePpFragment;
-import ensp.reseau.wiatalk.ui.fragment.CreateGroupSetInfosFragment;
 
 import static android.content.ContentValues.TAG;
 

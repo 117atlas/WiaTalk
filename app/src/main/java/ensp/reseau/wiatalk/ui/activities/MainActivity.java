@@ -1,5 +1,11 @@
 package ensp.reseau.wiatalk.ui.activities;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -26,6 +32,8 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
+import ensp.reseau.wiatalk.app.WiaTalkService;
+import ensp.reseau.wiatalk.app.WiaTalkServiceRunnerBroadcastReceiver;
 import ensp.reseau.wiatalk.ui.UiUtils;
 import ensp.reseau.wiatalk.ui.fragment.CallsFragment;
 import ensp.reseau.wiatalk.ui.fragment.DiscussionsFragment;
@@ -46,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
 
     private DiscussionsFragment messagesFragment;
     private CallsFragment callsFragment;
+
+
+    private WiaTalkService wiaTalkService;
+    private Intent wiaTalkServiceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(callsFragment, getResources().getString(R.string.tab_calls));
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
+
+        setServiceIntent();
     }
 
     public void initDrawer(){
@@ -198,5 +212,62 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         return true;
+    }
+
+    private void setServiceIntent(){
+        //Set Service Intent
+        wiaTalkServiceIntent = new Intent(this, WiaTalkService.class);
+        if (isWiatalkServiceRunning()) {
+            //Bind to the service
+            bindService(wiaTalkServiceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+        }else{
+            wiaTalkService=new WiaTalkService();
+            //Start the service
+            startService(wiaTalkServiceIntent);
+            //Bind to the service
+            bindService(wiaTalkServiceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+        }
+    }
+
+    private boolean isWiatalkServiceRunning() {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> serviceInfos = manager.getRunningServices(Integer.MAX_VALUE);
+        for (ActivityManager.RunningServiceInfo service : serviceInfos) {
+            System.out.println(WiaTalkService.class.getName()+"|"+service.service.getClassName());
+            if (WiaTalkService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            wiaTalkService = ((WiaTalkService.MyBinder) service).getService();
+            //Set Initial Args
+            wiaTalkService.setArg0(0.02);
+        }
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            wiaTalkService = null;
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        //UnBind from service
+        System.out.println("ON DESTROY ACTIVITY");
+        unbindService(serviceConnection);
+        //Stop Service
+        stopService(wiaTalkServiceIntent);
+        //Prepare intent to broadcast reciver
+        Intent intent = new Intent(MainActivity.this,WiaTalkServiceRunnerBroadcastReceiver.class);
+        intent.setAction(WiaTalkServiceRunnerBroadcastReceiver.ACTION_SET_UpdateService);
+        intent.putExtra(WiaTalkServiceRunnerBroadcastReceiver.keyVal_arg0, 0.02);
+        intent.putExtra(WiaTalkServiceRunnerBroadcastReceiver.keyVal_arg1, "Wiatalk Service");
+        //Send broadcast to start UpdateService after the activity ended
+        sendBroadcast(intent);
+        super.onDestroy();
     }
 }

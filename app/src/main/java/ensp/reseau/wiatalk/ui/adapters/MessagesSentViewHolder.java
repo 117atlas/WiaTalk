@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ensp.reseau.wiatalk.R;
-import ensp.reseau.wiatalk.models.Message;
+import ensp.reseau.wiatalk.tmodels.Message;
 
 /**
  * Created by Sim'S on 08/05/2018.

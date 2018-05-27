@@ -15,13 +15,11 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import ensp.reseau.wiatalk.R;
-import ensp.reseau.wiatalk.models.Call;
-import ensp.reseau.wiatalk.models.Discussion;
+import ensp.reseau.wiatalk.tmodels.Call;
 import ensp.reseau.wiatalk.ui.IntentExtra;
 import ensp.reseau.wiatalk.ui.UiUtils;
 import ensp.reseau.wiatalk.ui.activities.ContactsActivity;
 import ensp.reseau.wiatalk.ui.adapters.CallsAdapter;
-import ensp.reseau.wiatalk.ui.adapters.DiscussionsAdapter;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -1,6 +1,5 @@
 package ensp.reseau.wiatalk.ui.activities;
 
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,8 +13,7 @@ import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;
 
 import ensp.reseau.wiatalk.R;
-import ensp.reseau.wiatalk.models.Group;
-import ensp.reseau.wiatalk.models.User;
+import ensp.reseau.wiatalk.tmodels.User;
 
 public class EditPseudoActivity extends AppCompatActivity {
     private LinearLayout root;

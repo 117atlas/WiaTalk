@@ -4,7 +4,6 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -20,10 +19,9 @@ import java.util.ArrayList;
 
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
-import ensp.reseau.wiatalk.models.Group;
-import ensp.reseau.wiatalk.models.User;
+import ensp.reseau.wiatalk.tmodels.Group;
+import ensp.reseau.wiatalk.tmodels.User;
 import ensp.reseau.wiatalk.ui.adapters.ContactsAdapter;
-import ensp.reseau.wiatalk.ui.adapters.GroupSmallAdapter;
 import ensp.reseau.wiatalk.ui.adapters.IPhoneContactsCharged;
 
 public class GroupInfosActivity extends AppCompatActivity {

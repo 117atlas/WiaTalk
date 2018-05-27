@@ -1,4 +1,4 @@
-package ensp.reseau.wiatalk.models.utils;
+package ensp.reseau.wiatalk.tmodels.utils;
 
 import java.io.Serializable;
 

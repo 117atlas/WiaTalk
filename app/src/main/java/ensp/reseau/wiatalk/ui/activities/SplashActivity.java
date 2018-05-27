@@ -9,7 +9,7 @@ import ensp.reseau.wiatalk.ui.UiUtils;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static final long SPLASH_DELAY = 5000;
+    private static final long SPLASH_DELAY = 1200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

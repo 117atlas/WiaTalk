@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ensp.reseau.wiatalk.R;
-import ensp.reseau.wiatalk.models.User;
+import ensp.reseau.wiatalk.tmodels.User;
 
 /**
  * A simple {@link Fragment} subclass.

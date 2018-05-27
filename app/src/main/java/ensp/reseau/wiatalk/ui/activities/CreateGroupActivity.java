@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ensp.reseau.wiatalk.R;
-import ensp.reseau.wiatalk.models.User;
+import ensp.reseau.wiatalk.tmodels.User;
 import ensp.reseau.wiatalk.ui.UiUtils;
 import ensp.reseau.wiatalk.ui.UnSwipeableViewPager;
 import ensp.reseau.wiatalk.ui.fragment.CreateGroupAddMembersFragment;

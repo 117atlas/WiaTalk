@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ensp.reseau.wiatalk.R;
-import ensp.reseau.wiatalk.models.utils.Document;
+import ensp.reseau.wiatalk.tmodels.utils.Document;
 
 /**
  * Created by Sim'S on 09/05/2018.

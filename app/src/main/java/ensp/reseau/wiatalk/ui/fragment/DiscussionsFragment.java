@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import ensp.reseau.wiatalk.R;
-import ensp.reseau.wiatalk.models.Discussion;
+import ensp.reseau.wiatalk.tmodels.Discussion;
 import ensp.reseau.wiatalk.ui.IntentExtra;
 import ensp.reseau.wiatalk.ui.UiUtils;
 import ensp.reseau.wiatalk.ui.activities.ContactsActivity;

@@ -12,10 +12,9 @@ import android.widget.Toast;
 
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;
-import com.vanniktech.emoji.EmojiTextView;
 
 import ensp.reseau.wiatalk.R;
-import ensp.reseau.wiatalk.models.Group;
+import ensp.reseau.wiatalk.tmodels.Group;
 
 public class EditGroupNameActivity extends AppCompatActivity {
     private LinearLayout root;

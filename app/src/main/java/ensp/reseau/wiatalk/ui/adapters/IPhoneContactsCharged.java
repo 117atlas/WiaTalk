@@ -2,7 +2,7 @@ package ensp.reseau.wiatalk.ui.adapters;
 
 import java.util.ArrayList;
 
-import ensp.reseau.wiatalk.models.User;
+import ensp.reseau.wiatalk.tmodels.User;
 
 
 /**

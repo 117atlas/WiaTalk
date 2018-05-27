@@ -14,8 +14,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import ensp.reseau.wiatalk.R;
-import ensp.reseau.wiatalk.models.User;
-import ensp.reseau.wiatalk.models.utils.Contact;
+import ensp.reseau.wiatalk.tmodels.User;
 import ensp.reseau.wiatalk.ui.UiUtils;
 import ensp.reseau.wiatalk.ui.adapters.ContactsAdapter;
 import ensp.reseau.wiatalk.ui.adapters.IPhoneContactsCharged;

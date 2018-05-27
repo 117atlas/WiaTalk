@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -30,8 +29,7 @@ import java.util.ArrayList;
 
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
-import ensp.reseau.wiatalk.models.utils.Bucket;
-import ensp.reseau.wiatalk.ui.fragment.VideoViewerFragment;
+import ensp.reseau.wiatalk.tmodels.utils.Bucket;
 
 public class GalleryActivity extends AppCompatActivity {
 
