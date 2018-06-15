@@ -52,6 +52,7 @@ public class IPCallsDAO {
             ipcall.setType(cursor.getInt(5));
             ipcall.setMode(cursor.getInt(6));
             calls.add(ipcall);
+            i++;
         }
         return calls;
     }

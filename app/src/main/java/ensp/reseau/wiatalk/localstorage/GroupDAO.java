@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.google.gson.internal.bind.DateTypeAdapter;
+
 import java.util.ArrayList;
 
 import ensp.reseau.wiatalk.model.Group;
@@ -33,10 +35,11 @@ public class GroupDAO {
         values.put(DatabaseHandler.DB_GROUPS__NAME, group.getName());
         values.put(DatabaseHandler.DB_GROUPS__TYPE, group.getType());
         values.put(DatabaseHandler.DB_GROUPS__PP, group.getPp());
-        values.put(DatabaseHandler.DB_GROUPS__PP_PATH, group.getPpPath());
+        if (group.getPpPath()!=null && !group.getPpPath().isEmpty()) values.put(DatabaseHandler.DB_GROUPS__PP_PATH, group.getPpPath());
         values.put(DatabaseHandler.DB_GROUPS__CREATOR_ID, group.getCreatorId());
         values.put(DatabaseHandler.DB_GROUPS__CREATION_TIMESTAMP, String.valueOf(group.getCreation_date()));
         values.put(DatabaseHandler.DB_GROUPS__PP_TIMESTAMP, group.getPp_change_timestamp());
+        values.put(DatabaseHandler.DB_GROUPS__OLD_PP_TIMESTAMP, ""+group.getOld_pp_change_timestamp());
         return values;
     }
 
@@ -54,7 +57,9 @@ public class GroupDAO {
             group.setCreatorId(cursor.getString(5));
             group.setCreation_date(Long.valueOf(cursor.getString(6)));
             group.setPp_change_timestamp(Long.valueOf(cursor.getString(7)));
+            group.setOld_pp_change_timestamp(Long.valueOf(cursor.getString(8)));
             groups.add(group);
+            i++;
         }
         return groups;
     }
@@ -80,5 +85,40 @@ public class GroupDAO {
         Cursor cursor = database.query(DatabaseHandler.DB_GROUPS, DatabaseHandler.DB_GROUPS_COLUMNS, DatabaseHandler.DB_GROUPS__ID + " = '" + groupId + "'", null, null, null, DatabaseHandler.DB_GROUPS__NAME);
         ArrayList<Group> res = cursorToGroups(cursor);
         return res==null?null:res.get(0);
+    }
+
+    public String getIb(String me, String userId){
+        Cursor cursor_me = database.query(DatabaseHandler.DB_USERS_GROUPS, new String[]{DatabaseHandler.DB_USERS_GROUPS__GROUP}, DatabaseHandler.DB_USERS_GROUPS__USER + " = '"+me+"'", null, null, null, null);
+        String in = "";
+        int i=0;
+        if (cursor_me.getCount()>0){
+            in = in + "(";
+            while (cursor_me.moveToPosition(i)){
+                in = in + "'" + cursor_me.getString(0) + "', ";
+                i++;
+            }
+            in = in.substring(0, in.length()-2);
+            in = in + ")";
+        }
+        if (in.isEmpty()) return null;
+        Cursor cursor_ib = database.query(DatabaseHandler.DB_USERS_GROUPS, new String[]{DatabaseHandler.DB_USERS_GROUPS__GROUP}, DatabaseHandler.DB_USERS_GROUPS__USER +" = '"+userId+"' AND " + DatabaseHandler.DB_USERS_GROUPS__GROUP + " IN " + in, null, null, null, null);
+        i=0;
+        if (cursor_ib.getCount()==0) return null;
+        else {
+            cursor_ib.moveToPosition(0);
+            return cursor_ib.getString(0);
+        }
+    }
+
+    public ArrayList<String> getCommonGroups(String memberId){
+        Cursor cursor = database.query(DatabaseHandler.DB_USERS_GROUPS, new String[]{DatabaseHandler.DB_USERS_GROUPS__GROUP}, DatabaseHandler.DB_USERS_GROUPS__USER + " = '" + memberId + "'", null, null, null, null);
+        if (cursor.getCount()==0) return null;
+        ArrayList<String> groupsIds = new ArrayList<>();
+        int i=0;
+        while (cursor.moveToPosition(i)){
+            groupsIds.add(cursor.getString(0));
+            i++;
+        }
+        return groupsIds;
     }
 }

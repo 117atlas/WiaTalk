@@ -134,6 +134,6 @@ public class User {
         if(cur!=null){
             cur.close();
         }
-        iPhoneContactsCharged.onCharged(users);
+        //iPhoneContactsCharged.onCharged(users);
     }
 }

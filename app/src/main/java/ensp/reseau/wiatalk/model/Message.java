@@ -1,10 +1,20 @@
 package ensp.reseau.wiatalk.model;
 
+import android.view.View;
+import android.widget.ProgressBar;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import ensp.reseau.wiatalk.R;
+import ensp.reseau.wiatalk.U;
+import ensp.reseau.wiatalk.app.WiaTalkApp;
+import ensp.reseau.wiatalk.ui.activities.DiscussionActivity;
 
 /**
  * Created by Sim'S on 17/05/2018.
@@ -18,31 +28,49 @@ public class Message implements Serializable {
     public static final int TYPE_READ = 3;
 
     @SerializedName("_id") @Expose private String _id;
-    @SerializedName("author") @Expose private User sender;
-    @SerializedName("send_date") @Expose private long send_timestamp;
+    @SerializedName("author") @Expose private String senderId;
+    @SerializedName("sent_date") @Expose private long send_timestamp;
     @SerializedName("server_received_date") @Expose private long server_reception_timestamp;
-    @SerializedName("group") @Expose private Group group;
+    @SerializedName("group") @Expose private String groupId;
     @SerializedName("status") @Expose private int status;
-    @SerializedName("received_by") @Expose private List<String> received;
-    @SerializedName("read_by") @Expose private List<String> read;
-    @SerializedName("reply") @Expose private Message reply;
+    @SerializedName("received_by") @Expose private List<String> receivedIds;
+    @SerializedName("read_by") @Expose private List<String> readIds;
+    @SerializedName("reply") @Expose private String replyId;
     @SerializedName("content") @Expose private String text;
     @SerializedName("file") @Expose private MessageFile file;
     @SerializedName("voice_note") @Expose private String voicenote;
     @SerializedName("type") @Expose private boolean signalisationMessage;
 
-    private String senderId;
-    private String groupId;
-    private List<String> receivedIds;
-    private List<String> readIds;
-    private String replyId;
-    private String fileId;
-    private String voicenoteLocal;
-    private long myReceptionTimestamp;
-    private String voiceNotePath;
-    private String receivedIdsList;
-    private String readListIds;
-    private boolean isNew;
+    @Expose(serialize = false, deserialize = false) private List<User> received;
+    @Expose(serialize = false, deserialize = false) private List<User> read;
+    @Expose(serialize = false, deserialize = false) private String fileId;
+    @Expose(serialize = false, deserialize = false) private long myReceptionTimestamp;
+    @Expose(serialize = false, deserialize = false) private String voiceNotePath;
+    @Expose(serialize = false, deserialize = false) private String receivedIdsList;
+    @Expose(serialize = false, deserialize = false) private String readListIds;
+    @Expose(serialize = false, deserialize = false) private boolean isNew = true;
+    @Expose(serialize = false, deserialize = false) private User sender;
+    @Expose(serialize = false, deserialize = false) private Group _group;
+    @Expose(serialize = false, deserialize = false) private Message _reply;
+
+    public void arrangeForLocalStorage(){
+        fileId = file==null?null:file.get_id();
+
+        receivedIdsList = "";
+        if (receivedIds!=null) for (String s: receivedIds) receivedIdsList = receivedIdsList + s + "|";
+        if (!receivedIdsList.isEmpty()) receivedIdsList = receivedIdsList.substring(0, receivedIdsList.length()-1);
+
+        readListIds = "";
+        if (readIds!=null) for (String s: readIds) readListIds = readListIds + s + "|";
+        if (!readListIds.isEmpty()) readListIds = readListIds.substring(0, readListIds.length()-1);
+
+        if (myReceptionTimestamp==0) myReceptionTimestamp = Calendar.getInstance().getTimeInMillis();
+    }
+
+    public void setFeedbacks(){
+        receivedIds = U.Split(receivedIdsList, '|');
+        readIds = U.Split(readListIds, '|');
+    }
 
     public boolean isNew() {
         return isNew;
@@ -52,11 +80,11 @@ public class Message implements Serializable {
         isNew = aNew;
     }
 
-    public void setReceived(List<String> received) {
+    public void setReceived(List<User> received) {
         this.received = received;
     }
 
-    public void setRead(List<String> read) {
+    public void setRead(List<User> read) {
         this.read = read;
     }
 
@@ -66,6 +94,7 @@ public class Message implements Serializable {
 
     public void setReceivedIdsList(String receivedIdsList) {
         this.receivedIdsList = receivedIdsList;
+        if (receivedIdsList!=null) receivedIds = ModelUtils.split(this.receivedIdsList, "|");
     }
 
     public String getReadListIds() {
@@ -74,6 +103,7 @@ public class Message implements Serializable {
 
     public void setReadListIds(String readListIds) {
         this.readListIds = readListIds;
+        if (readListIds!=null) readIds = ModelUtils.split(this.readListIds, "|");
     }
 
     public String getSenderId() {
@@ -100,14 +130,6 @@ public class Message implements Serializable {
         this.voiceNotePath = voiceNotePath;
     }
 
-    public String getVoicenoteLocal() {
-        return voicenoteLocal;
-    }
-
-    public void setVoicenoteLocal(String voicenoteLocal) {
-        this.voicenoteLocal = voicenoteLocal;
-    }
-
     public String getGroupId() {
         return groupId;
     }
@@ -122,6 +144,9 @@ public class Message implements Serializable {
 
     public void setReceivedIds(List<String> receivedIds) {
         this.receivedIds = receivedIds;
+        receivedIdsList = "";
+        for (String s: receivedIds) receivedIdsList = receivedIdsList + s + "|";
+        receivedIdsList = receivedIdsList.substring(0, receivedIdsList.length()-1);
     }
 
     public List<String> getReadIds() {
@@ -130,6 +155,9 @@ public class Message implements Serializable {
 
     public void setReadIds(List<String> readIds) {
         this.readIds = readIds;
+        readListIds = "";
+        for (String s: readIds) readListIds = readListIds + s + "|";
+        readListIds = readListIds.substring(0, readListIds.length()-1);
     }
 
     public String getReplyId() {
@@ -149,22 +177,6 @@ public class Message implements Serializable {
     }
 
     public Message(){}
-
-    public Message(String _id, User sender, long send_timestamp, long server_reception_timestamp, Group group, int status,
-                   List<String> received, List<String> read, Message reply, String text, MessageFile file, String voicenote) {
-        this._id = _id;
-        this.sender = sender;
-        this.send_timestamp = send_timestamp;
-        this.server_reception_timestamp = server_reception_timestamp;
-        this.group = group;
-        this.status = status;
-        this.received = received;
-        this.read = read;
-        this.reply = reply;
-        this.text = text;
-        this.file = file;
-        this.voicenote = voicenote;
-    }
 
     public boolean isSignalisationMessage() {
         return signalisationMessage;
@@ -207,11 +219,11 @@ public class Message implements Serializable {
     }
 
     public Group getGroup() {
-        return group;
+        return _group;
     }
 
     public void setGroup(Group group) {
-        this.group = group;
+        this._group = group;
     }
 
     public int getStatus() {
@@ -223,11 +235,11 @@ public class Message implements Serializable {
     }
 
     public Message getReply() {
-        return reply;
+        return _reply;
     }
 
     public void setReply(Message reply) {
-        this.reply = reply;
+        this._reply = reply;
     }
 
     public String getText() {
@@ -254,11 +266,36 @@ public class Message implements Serializable {
         this.voicenote = voicenote;
     }
 
-    public List<String> getReceived() {
+    public List<User> getReceived() {
         return received;
     }
 
-    public List<String> getRead() {
+    public List<User> getRead() {
         return read;
+    }
+
+    public void addReceived(User user){
+        if (received==null) received = new ArrayList<>();
+        received.add(user);
+    }
+
+    public void addRead(User user){
+        if (read==null) read = new ArrayList<>();
+        read.add(user);
+    }
+
+
+
+    public Message copy(){
+        Message message = new Message();
+        message.setSenderId(senderId);
+        message.setText(text);
+        message.setGroupId(groupId);
+        message.setSend_timestamp(send_timestamp);
+        message.setStatus(0);
+        message.setReplyId(replyId);
+        message.setMyReceptionTimestamp(message.getSend_timestamp());
+        message.setSignalisationMessage(false);
+        return message;
     }
 }

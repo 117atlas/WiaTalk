@@ -3,8 +3,10 @@ package ensp.reseau.wiatalk.ui.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.design.widget.CoordinatorLayout;
@@ -16,13 +18,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,17 +41,35 @@ import com.vanniktech.emoji.ios.IosEmojiProvider;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
+import ensp.reseau.wiatalk.app.WiaTalkApp;
 import ensp.reseau.wiatalk.files.FilesUtils;
-import ensp.reseau.wiatalk.tmodels.Message;
+import ensp.reseau.wiatalk.files.MessageFilesUtils;
+import ensp.reseau.wiatalk.localstorage.LocalStorageDiscussions;
+import ensp.reseau.wiatalk.localstorage.LocalStorageMessages;
+import ensp.reseau.wiatalk.localstorage.LocalStorageUser;
+import ensp.reseau.wiatalk.localstorage.MessageFileUtils;
+import ensp.reseau.wiatalk.model.Group;
+import ensp.reseau.wiatalk.model.Message;
+import ensp.reseau.wiatalk.model.MessageFile;
+import ensp.reseau.wiatalk.model.User;
+import ensp.reseau.wiatalk.model.UsersGroups;
+import ensp.reseau.wiatalk.network.MessageInterface;
+import ensp.reseau.wiatalk.network.NetworkAPI;
+import ensp.reseau.wiatalk.network.NetworkUtils;
+import ensp.reseau.wiatalk.tmodels.Discussion;
 import ensp.reseau.wiatalk.ui.UiUtils;
 import ensp.reseau.wiatalk.ui.adapters.ICameraHandler;
 import ensp.reseau.wiatalk.ui.adapters.IMessageClickHandler;
 import ensp.reseau.wiatalk.ui.adapters.MessagesAdapter;
 import ensp.reseau.wiatalk.ui.fragment.FileChooserBottomFragment;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
@@ -96,10 +120,17 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
     private Uri imageFileUri;
     private Uri videoFileUri;
 
+    private Group group;
+    private MessagesAdapter adapter;
+
+
+
+    private Message replyMessage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        group = (Group) getIntent().getSerializableExtra(Group.class.getSimpleName());
         EmojiManager.install(new IosEmojiProvider());
 
         setContentView(R.layout.activity_discussion);
@@ -110,11 +141,76 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
         sendMessageManager();
         initRecordContainer();
 
-        test();
+        messages.setLayoutManager(messagesllManager);
+        adapter = new MessagesAdapter(this);
+        messages.setAdapter(adapter);
+        //adapter.setMessages((ArrayList<Message>) group.getMessages());
+        //test();
+        bind();
+    }
+
+    private void refreshMessages(){
+        LocalStorageDiscussions.reloadGroupMessages(group, this);
+        adapter.setMessages((ArrayList<Message>)group.getMessages());
+        messagesllManager.scrollToPosition(messagesllManager.findLastVisibleItemPosition());
+    }
+
+    private void bind(){
+        LocalStorageDiscussions.populateGroup(group, this);
+        group.arrangeColors(WiaTalkApp.getMe(this));
+        adapter.setGroup(group);
+        adapter.setMessages((ArrayList<Message>)group.getMessages());
+        messagesllManager.scrollToPosition(messagesllManager.findLastVisibleItemPosition());
+
+        if (group.getType()==Group.TYPE_IB){
+            User me = WiaTalkApp.getMe(this);
+            final User other = group.getMembers().get(0).getMember().equals(me)?group.getMembers().get(1).getMember():group.getMembers().get(0).getMember();
+            if (other.getPpPath()!=null && !other.getPpPath().equals("0") && !other.getPpPath().isEmpty())
+                UiUtils.showImage(this, pp, other.getPpPath());
+            else{
+                NetworkUtils.downloadPp(this, other.get_Id(), other.getPp(), new NetworkUtils.IFileDownload() {
+                    @Override
+                    public void onFileDownloaded(boolean error, String path) {
+                        if (!error){
+                            other.setPpPath(path);
+                            LocalStorageUser.storeUser(other, DiscussionActivity.this, false);
+                            UiUtils.showImage(DiscussionActivity.this, pp, other.getPpPath());
+                        }
+                        else UiUtils.showImage(DiscussionActivity.this, pp, other.getPp(), true);
+                    }
+                });
+            }
+            discName.setText(other.getPseudo());
+            discInfos.setVisibility(View.GONE);
+        }
+        else{
+            if (group.getPpPath()!=null && !group.getPpPath().equals("0") && !group.getPpPath().isEmpty())
+                UiUtils.showImage(this, pp, group.getPpPath());
+            else{
+                NetworkUtils.downloadPp(this, group.get_id(), group.getPp(), new NetworkUtils.IFileDownload() {
+                    @Override
+                    public void onFileDownloaded(boolean error, String path) {
+                        if (!error){
+                            group.setPpPath(path);
+                            LocalStorageDiscussions.storeGroup(group, DiscussionActivity.this);
+                            UiUtils.showImage(DiscussionActivity.this, pp, group.getPpPath());
+                        }
+                        else UiUtils.showImage(DiscussionActivity.this, pp, group.getPp(), true);
+                    }
+                });
+            }
+            discName.setText(group.getName());
+            String members = "";
+            for (UsersGroups usersGroups: group.getMembers()) members = members + usersGroups.getMember().getPseudo() + ", ";
+            members = members.substring(0, members.length()-1);
+            discInfos.setVisibility(View.VISIBLE);
+            discInfos.setText(members);
+        }
     }
 
     private void initializeWidgets(){
         root = findViewById(R.id.root);
+        LocalStorageMessages.deletePendingMessage(this);
 
         toolbarContent = findViewById(R.id.toolbar_content);
         pp = findViewById(R.id.pp);
@@ -124,7 +220,7 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
         toolbar.setTitle("");
         toolbar.requestFocus();
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,13 +230,24 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
         toolbarContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UiUtils.switchActivity(DiscussionActivity.this, GroupInfosActivity.class, false, null);
+                if (group.getType()==Group.TYPE_IB){
+                    Intent intent = new Intent(DiscussionActivity.this, ContactInfosActivity.class);
+                    User me = WiaTalkApp.getMe(DiscussionActivity.this);
+                    final User other = group.getMembers().get(0).getMember().equals(me)?group.getMembers().get(1).getMember():group.getMembers().get(0).getMember();
+                    intent.putExtra(User.class.getSimpleName(), other);
+                    startActivity(intent);
+                }
+                else{
+                    Intent intent = new Intent(DiscussionActivity.this, GroupInfosActivity.class);
+                    intent.putExtra(Group.class.getSimpleName(), group);
+                    startActivity(intent);
+                }
             }
         });
 
         //scroll = findViewById(R.id.scroll);
         messages = findViewById(R.id.messages_list);
-        messagesllManager = new LinearLayoutManager(this);
+        messagesllManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         dateIndicator = findViewById(R.id.date_indicator);
         goDown = findViewById(R.id.godown);
 
@@ -202,13 +309,14 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
         replyMessageLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (replyMessage!=null) messagesllManager.scrollToPosition(((MessagesAdapter)messages.getAdapter()).getMessages().indexOf(replyMessage));
             }
         });
         closereplyMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 replyMessageContainer.setVisibility(View.GONE);
+                replyMessage = null;
             }
         });
         replyMessageContainer.setVisibility(View.GONE);
@@ -259,6 +367,31 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
             }
         });
         showFileContainer();
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (text.getText().toString().isEmpty()) return;
+
+                final Message message = new Message();
+                message.setSenderId(WiaTalkApp.getMe(DiscussionActivity.this).get_Id());
+                message.setText(text.getText().toString());
+                message.setGroupId(group.get_id());
+                message.setSend_timestamp(Calendar.getInstance().getTimeInMillis());
+                message.setStatus(0);
+                message.setReplyId(replyMessage==null?null:replyMessage.get_id());
+                message.setMyReceptionTimestamp(message.getSend_timestamp());
+                message.setSignalisationMessage(false);
+                ((MessagesAdapter)adapter).addMessage(message.copy());
+                message.arrangeForLocalStorage();
+
+                LocalStorageMessages.storeMessages(message.copy(), DiscussionActivity.this);
+                text.getText().clear();
+                message.setStatus(1);
+                sendMessage(message);
+
+            }
+        });
     }
 
     private void hideFileContainer(){
@@ -304,10 +437,7 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
     }
 
     private void test(){
-        messages.setLayoutManager(messagesllManager);
-        MessagesAdapter adapter = new MessagesAdapter(this);
-        messages.setAdapter(adapter);
-        adapter.setMessages(Message.random(57));
+        //adapter.setMessages(Message.random(57));
         messagesllManager.scrollToPosition(messages.getAdapter().getItemCount()-1);
     }
 
@@ -344,6 +474,17 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
         return super.onCreateOptionsMenu(menu);
     }
 
+    private void bindReplyMessage(){
+        String file = "";
+        String[] types = {"Photo", "Video", "Audio", "Document"};
+        if (replyMessage!=null && replyMessage.getFile()!=null) file = "["+types[replyMessage.getFile().getType()-1]+"] ";
+        Spannable spannable = new SpannableString(file+replyMessage.getText());
+        spannable.setSpan(new ForegroundColorSpan(Color.MAGENTA), spannable.toString().indexOf(file), spannable.toString().indexOf(file)+file.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        replyMessageMessage.setText(spannable);
+        replyMessageSender.setText(replyMessage.getReply().getSender().getPseudo());
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -352,6 +493,10 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
                 longClickSelectedItems = new ArrayList<>();
                 longClick = false;
                 ((MessagesAdapter)messages.getAdapter()).selectItems(longClickSelectedItems);
+
+                replyMessage = ((MessagesAdapter)messages.getAdapter()).getSelectedMessages().get(0);
+                bindReplyMessage();
+
                 onCreateOptionsMenu(activityMenu);
             } break;
             case R.id.copy:{
@@ -523,6 +668,13 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
                 ArrayList<String> selected = (ArrayList<String>) data.getSerializableExtra("SELECTED");
                 for (String ss: selected) s = s + ss + "\n";
                 Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+
+                ArrayList<MessageFile> messageFiles = buildMessageFile(selected, data.getIntExtra("TYPE", MessageFile.TYPE_PHOTO));
+                ArrayList<ProgressBar> progressBars = new ArrayList<>();
+                ArrayList<Message> messages = buildMessagesForMessageFiles(messageFiles, progressBars);
+                if (messageFiles!=null && messageFiles.size()>0){
+                    for (int i=0; i<messageFiles.size(); i++) sendMessageFile(messageFiles.get(i), messages.get(i), progressBars.get(i));
+                }
             }
         }
         else if (requestCode == U.SELECT_AUDIOS_REQ_CODES){
@@ -531,6 +683,13 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
                 ArrayList<String> selected = (ArrayList<String>) data.getSerializableExtra("SELECTED_AUDIOS");
                 for (String ss: selected) s = s + ss + "\n";
                 Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+
+                ArrayList<MessageFile> messageFiles = buildMessageFile(selected, MessageFile.TYPE_AUDIO);
+                ArrayList<ProgressBar> progressBars = new ArrayList<>();
+                ArrayList<Message> messages = buildMessagesForMessageFiles(messageFiles, progressBars);
+                if (messageFiles!=null && messageFiles.size()>0){
+                    for (int i=0; i<messageFiles.size(); i++) sendMessageFile(messageFiles.get(i), messages.get(i), progressBars.get(i));
+                }
             }
         }
         else if (requestCode == U.SELECT_DOCS_REQ_CODES){
@@ -539,6 +698,13 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
                 ArrayList<String> selected = (ArrayList<String>) data.getSerializableExtra("SELECTED_DOCUMENTS");
                 for (String ss: selected) s = s + ss + "\n";
                 Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+
+                ArrayList<MessageFile> messageFiles = buildMessageFile(selected, MessageFile.TYPE_DOCUMENT);
+                ArrayList<ProgressBar> progressBars = new ArrayList<>();
+                ArrayList<Message> messages = buildMessagesForMessageFiles(messageFiles, progressBars);
+                if (messageFiles!=null && messageFiles.size()>0){
+                    for (int i=0; i<messageFiles.size(); i++) sendMessageFile(messageFiles.get(i), messages.get(i), progressBars.get(i));
+                }
             }
         }
     }
@@ -592,4 +758,190 @@ public class DiscussionActivity extends AppCompatActivity implements IMessageCli
         }).start();
     }
 
+    private ArrayList<MessageFile> buildMessageFile(ArrayList<String> paths, int type){
+        if (paths==null) return null;
+        ArrayList<MessageFile> messageFiles = new ArrayList<>();
+        for (String path: paths){
+            File file = new File(path);
+            if (file.exists()){
+                MessageFile messageFile = new MessageFile();
+                messageFile.set_id(String.valueOf(Calendar.getInstance().getTimeInMillis()));
+                messageFile.setSize(file.length());
+                messageFile.setType(type);
+                switch (type){
+                    case MessageFile.TYPE_PHOTO:{
+                        messageFile.setLocalPath(MessageFileUtils.copySentPhotoFile(path).getAbsolutePath());
+                    } break;
+                    case MessageFile.TYPE_VIDEO: {
+                        messageFile.setLocalPath(MessageFileUtils.copySentVideoFile(path).getAbsolutePath());
+                    } break;
+                    case MessageFile.TYPE_AUDIO: {
+                        messageFile.setLocalPath(MessageFileUtils.copySentAudioFile(path).getAbsolutePath());
+                        messageFile.setLength(MessageFileUtils.getAudioFileDuration(path));
+                    } break;
+                    case MessageFile.TYPE_DOCUMENT: messageFile.setLocalPath(MessageFileUtils.copySentDocumentFile(path).getAbsolutePath()); break;
+                }
+                messageFile.setOriginalName(path.substring(path.lastIndexOf(File.separator)+1, path.length()));
+                messageFiles.add(messageFile);
+            }
+        }
+        return messageFiles;
+    }
+
+    private ArrayList<Message> buildMessagesForMessageFiles(ArrayList<MessageFile> messageFiles, ArrayList<ProgressBar> progressBars){
+        if (messageFiles==null) return null;
+        ArrayList<Message> messages = new ArrayList<>();
+        for (MessageFile messageFile: messageFiles){
+            Message message = new Message();
+            message.setSenderId(WiaTalkApp.getMe(DiscussionActivity.this).get_Id());
+            message.setText(text.getText().toString());
+            message.setGroupId(group.get_id());
+            message.setSend_timestamp(Calendar.getInstance().getTimeInMillis());
+            message.setStatus(0);
+            message.setReplyId(replyMessage==null?null:replyMessage.get_id());
+            message.setMyReceptionTimestamp(message.getSend_timestamp());
+            message.setSignalisationMessage(false);
+            message.setFile(messageFile);
+            message.setFileId(messageFile.get_id());
+
+            ((MessagesAdapter)adapter).addMessage(message);
+            progressBars.add(uploadProgressBar(messagesllManager.findViewByPosition(messagesllManager.findLastVisibleItemPosition()), messageFile.getType()));
+
+            message.arrangeForLocalStorage();
+            LocalStorageMessages.storeMessages(message, DiscussionActivity.this);
+            text.getText().clear();
+
+            messages.add(message);
+        }
+        return messages;
+    }
+
+    private void sendMessage(final Message message){
+        MessageInterface messageInterface = NetworkAPI.getClient().create(MessageInterface.class);
+        Call<MessageInterface.GetMessageResponse> sendMessage = messageInterface.sendMessage(message);
+        sendMessage.enqueue(new Callback<MessageInterface.GetMessageResponse>() {
+            @Override
+            public void onResponse(Call<MessageInterface.GetMessageResponse> call, Response<MessageInterface.GetMessageResponse> response) {
+                if (response.body()==null){
+                    Log.e("Send Message", "Response body null");
+                    return;
+                }
+                if (response.body().isError()){
+                    Log.e("Send Message", "Response error " + response.body().getMessage());
+                    return;
+                }
+                Log.d("Send Message", "Send message successfull");
+
+                Message nMessage = response.body().get_message();
+                nMessage.setSignalisationMessage(false);
+                nMessage.setMyReceptionTimestamp(message.getMyReceptionTimestamp());
+                nMessage.arrangeForLocalStorage();
+
+                LocalStorageMessages.deleteMessageByMyTimestamp(message.getMyReceptionTimestamp(), DiscussionActivity.this);
+                LocalStorageMessages.storeMessages(nMessage, DiscussionActivity.this);
+                refreshMessages();
+            }
+            @Override
+            public void onFailure(Call<MessageInterface.GetMessageResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+
+    private void sendMessageFile(final MessageFile messageFile, final Message message, final ProgressBar progressBar){
+        MessageInterface messageInterface = NetworkAPI.getClient().create(MessageInterface.class);
+        Call<MessageInterface.GetMessageFileResponse> sendMessageFile = messageInterface.sendMessageFile(messageFile);
+        sendMessageFile.enqueue(new Callback<MessageInterface.GetMessageFileResponse>() {
+            @Override
+            public void onResponse(Call<MessageInterface.GetMessageFileResponse> call, Response<MessageInterface.GetMessageFileResponse> response) {
+                if (response.body()==null){
+                    Log.e("Send Message File", "Response body null");
+                    return;
+                }
+                if (response.body().isError()){
+                    Log.e("Send Message File", "Response error " + response.body().getMessage());
+                    return;
+                }
+                Log.d("Send Message File", "Send message successfull");
+
+                MessageFile nMessageFile = response.body().getMessageFile();
+
+                LocalStorageMessages.deleteMessageFileById(messageFile.get_id(), DiscussionActivity.this);
+                LocalStorageMessages.storeMessageFile(nMessageFile, DiscussionActivity.this);
+
+                message.setFile(nMessageFile);
+                message.setFileId(nMessageFile.get_id());
+
+                sendMessage(message);
+                uploadMessageFile(messageFile, progressBar);
+            }
+            @Override
+            public void onFailure(Call<MessageInterface.GetMessageFileResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void uploadMessageFile(final MessageFile messageFile, ProgressBar progressBar){
+        NetworkUtils.uploadMessageFile(this, messageFile, progressBar, new NetworkUtils.IFileDownload() {
+            @Override
+            public void onFileDownloaded(boolean error, String path) {
+                if (!error) {
+                    Log.i("Upload Message FIle", path);
+                    messageFile.setUrl(path);
+                    updateMessageFile(messageFile);
+                    return;
+                }
+                Log.e("Upload Message FIle", "Error");
+            }
+        });
+    }
+
+    public void updateMessageFile(final MessageFile messageFile){
+        MessageInterface messageInterface = NetworkAPI.getClient().create(MessageInterface.class);
+        Call<MessageInterface.GetMessageFileResponse> sendMessageFile = messageInterface.updateMessageFile(messageFile);
+        sendMessageFile.enqueue(new Callback<MessageInterface.GetMessageFileResponse>() {
+            @Override
+            public void onResponse(Call<MessageInterface.GetMessageFileResponse> call, Response<MessageInterface.GetMessageFileResponse> response) {
+                if (response.body()==null){
+                    Log.e("Send Message File", "Response body null");
+                    return;
+                }
+                if (response.body().isError()){
+                    Log.e("Send Message File", "Response error " + response.body().getMessage());
+                    return;
+                }
+                Log.d("Send Message File", "Send message successfull");
+
+                MessageFile nMessageFile = response.body().getMessageFile();
+
+                LocalStorageMessages.updateMessageFile(nMessageFile, DiscussionActivity.this);
+            }
+            @Override
+            public void onFailure(Call<MessageInterface.GetMessageFileResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+
+    private ProgressBar uploadProgressBar(View view, int type) {
+        ProgressBar progressBar = null;
+        switch (type){
+            case MessageFile.TYPE_PHOTO:{
+                progressBar = view.findViewById(R.id.download_med_progress);
+            } break;
+            case MessageFile.TYPE_VIDEO:{
+                progressBar = view.findViewById(R.id.download_med_progress);
+            } break;
+            case MessageFile.TYPE_AUDIO:{
+                progressBar = view.findViewById(R.id.download_aud_progress);
+            } break;
+            case MessageFile.TYPE_DOCUMENT:{
+                progressBar = view.findViewById(R.id.download_doc_progress);
+            } break;
+        }
+        return progressBar;
+    }
 }

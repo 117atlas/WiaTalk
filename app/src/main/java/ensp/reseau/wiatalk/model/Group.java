@@ -4,9 +4,11 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import ensp.reseau.wiatalk.model.Message;
+import ensp.reseau.wiatalk.ui.UiUtils;
 
 /**
  * Created by Sim'S on 17/05/2018.
@@ -28,12 +30,22 @@ public class Group implements Serializable{
     @SerializedName("creator") @Expose private User creator;
     @SerializedName("creation_date") @Expose private long creation_date;
 
+    private long old_pp_change_timestamp;
+
     private List<String> messagesIds;
     private List<String> membersIds;
     private List<String> adminsIds;
     private String creatorId;
     private int newMessages;
     private String ppPath;
+
+    public long getOld_pp_change_timestamp() {
+        return old_pp_change_timestamp;
+    }
+
+    public void setOld_pp_change_timestamp(long old_pp_change_timestamp) {
+        this.old_pp_change_timestamp = old_pp_change_timestamp;
+    }
 
     public String getPpPath() {
         return ppPath;
@@ -186,5 +198,33 @@ public class Group implements Serializable{
 
     public void setCreation_date(long creation_date) {
         this.creation_date = creation_date;
+    }
+
+
+    private ArrayList<Integer> membersColors;
+
+    public ArrayList<Integer> getMembersColors() {
+        return membersColors;
+    }
+
+    public void arrangeColors(User me){
+        if (members!=null){
+            membersColors = new ArrayList<>();
+            for (UsersGroups usersGroups: members){
+                if (usersGroups.getMember().equals(me)) membersColors.add(UiUtils.myColor);
+                else {
+                    int random = (int)(Math.round(Math.random()*UiUtils.chatColors.length))%UiUtils.chatColors.length;
+                    membersColors.add(UiUtils.chatColors[random]);
+                }
+            }
+        }
+    }
+
+    public int indexOfMember(User member){
+        if (members==null) return -1;
+        for (int i=0; i<members.size(); i++){
+            if (members.get(i).getMember().equals(member)) return i;
+        }
+        return -1;
     }
 }

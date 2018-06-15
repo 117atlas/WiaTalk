@@ -125,7 +125,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
         else {
             LocalStorageUser.storeUser(finalUser, this, true);
-            UiUtils.switchActivity(this, MainActivity.class, true, null);
+            UiUtils.switchActivity(this, InitAppActivity.class, true, null);
         }
     }
 

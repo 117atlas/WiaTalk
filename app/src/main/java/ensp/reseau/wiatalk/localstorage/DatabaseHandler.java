@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    public static final int DB_VERSION = 1;
+    public static final int DB_VERSION = 10;
 
     public static final String DB_NAME = "wiatalk_db";
 
@@ -25,7 +25,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String DB_USERS__ACTIVE = "active";
     public static final String DB_USERS__ISME = "isme";
     public static final String DB_USERS__PP_TIMESTAMP = "pp_change_timestamp";
-    public static final String[] DB_USERS_COLUMN = {DB_USERS__ID, DB_USERS__MOBILE, DB_USERS__PSEUDO, DB_USERS__PP, DB_USERS__PP_PATH, DB_USERS__ACTIVE, DB_USERS__PP_TIMESTAMP};
+    public static final String DB_USERS__OLD_PP_TIMESTAMP = "old_pp_change_timestamp";
+    public static final String[] DB_USERS_COLUMN = {DB_USERS__ID, DB_USERS__MOBILE, DB_USERS__PSEUDO, DB_USERS__PP, DB_USERS__PP_PATH, DB_USERS__ACTIVE, DB_USERS__PP_TIMESTAMP, DB_USERS__OLD_PP_TIMESTAMP};
 
     //Table GROUP
     public static final String DB_GROUPS = "groups";
@@ -37,7 +38,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String DB_GROUPS__CREATOR_ID = "creator_id";
     public static final String DB_GROUPS__CREATION_TIMESTAMP = "creation_timestamp";
     public static final String DB_GROUPS__PP_TIMESTAMP = "pp_change_timestamp";
-    public static final String[] DB_GROUPS_COLUMNS = {DB_GROUPS__ID, DB_GROUPS__NAME, DB_GROUPS__TYPE, DB_GROUPS__PP, DB_GROUPS__PP_PATH, DB_GROUPS__CREATOR_ID, DB_GROUPS__CREATION_TIMESTAMP, DB_GROUPS__PP_TIMESTAMP};
+    public static final String DB_GROUPS__OLD_PP_TIMESTAMP = "old_pp_change_timestamp";
+    public static final String[] DB_GROUPS_COLUMNS = {DB_GROUPS__ID, DB_GROUPS__NAME, DB_GROUPS__TYPE, DB_GROUPS__PP, DB_GROUPS__PP_PATH, DB_GROUPS__CREATOR_ID, DB_GROUPS__CREATION_TIMESTAMP, DB_GROUPS__PP_TIMESTAMP, DB_GROUPS__OLD_PP_TIMESTAMP};
 
     //Table MESSAGES
     public static final String DB_MESSAGE = "messages";
@@ -55,9 +57,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String DB_MESSAGE__RECEIVED = "received";
     public static final String DB_MESSAGE__READ = "read";
     public static final String DB_MESSAGE__ISNEW = "isnew";
+    public static final String DB_MESSAGE__REPLY = "reply";
+    public static final String DB_MESSAGE__TYPE = "type";
     public static final String[] DB_MESSAGE_COLUMNS = {DB_MESSAGE__ID, DB_MESSAGE__SENDER, DB_MESSAGE__SEND_TIMESTAMP, DB_MESSAGE__SERVER_RECEPTION_TIMESTAMP,
             DB_MESSAGE__MY_RECEPTION_TIMESTAMP, DB_MESSAGE__GROUP_ID, DB_MESSAGE__STATUS, DB_MESSAGE__TEXT, DB_MESSAGE__MESSAGE_FILE_ID,
-            DB_MESSAGE__VOICENOTE_URL, DB_MESSAGE__VOICENOTE_LOCAL_PATH, DB_MESSAGE__RECEIVED, DB_MESSAGE__READ, DB_MESSAGE__ISNEW};
+            DB_MESSAGE__VOICENOTE_URL, DB_MESSAGE__VOICENOTE_LOCAL_PATH, DB_MESSAGE__RECEIVED, DB_MESSAGE__READ, DB_MESSAGE__ISNEW, DB_MESSAGE__REPLY, DB_MESSAGE__TYPE};
 
     //Table Users-Groups
     public static final String DB_USERS_GROUPS = "users_groups";
@@ -82,7 +86,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String DB_MESSAGE_FILES__TYPE = "type";
     public static final String DB_MESSAGE_FILES__URL = "url";
     public static final String DB_MESSAGE_FILES__LOCAL_PATH = "path";
-    public static final String[] DB_MESSAGE_FILES_COLUMNS = {DB_MESSAGE_FILES__ID, DB_MESSAGE_FILES__TYPE, DB_MESSAGE_FILES__URL, DB_MESSAGE_FILES__LOCAL_PATH};
+    public static final String DB_MESSAGE_FILES__ORIGINAL_NAME = "original_name";
+    public static final String DB_MESSAGE_FILES__SIZE = "size";
+    public static final String DB_MESSAGE_FILES__LENGTH = "length";
+    public static final String DB_MESSAGE_FILES__THUMBNAIL = "thumbnail";
+    public static final String DB_MESSAGE_FILES__LOCAL_THUMBNAIL = "local_thumbnail";
+    public static final String[] DB_MESSAGE_FILES_COLUMNS = {DB_MESSAGE_FILES__ID, DB_MESSAGE_FILES__TYPE, DB_MESSAGE_FILES__URL, DB_MESSAGE_FILES__LOCAL_PATH,
+                    DB_MESSAGE_FILES__ORIGINAL_NAME, DB_MESSAGE_FILES__SIZE, DB_MESSAGE_FILES__LENGTH, DB_MESSAGE_FILES__THUMBNAIL, DB_MESSAGE_FILES__LOCAL_THUMBNAIL};
 
     //Table Calls
     public static final String DB_IPCALLS = "calls";
@@ -105,8 +115,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             DB_USERS__PP + " TEXT, " +
             DB_USERS__PP_PATH + " TEXT, " +
             DB_USERS__ACTIVE + " INT, " +
-            DB_USERS__ISME + " INT, " +
-            DB_USERS__PP_TIMESTAMP + " TEXT" +
+            DB_USERS__ISME + " INT DEFAULT 0, " +
+            DB_USERS__PP_TIMESTAMP + " TEXT, " +
+            DB_USERS__OLD_PP_TIMESTAMP + " TEXT" +
             ")";
 
     public static final String CREATE_GROUPS = "CREATE TABLE IF NOT EXISTS " + DB_GROUPS + " (" +
@@ -117,7 +128,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             DB_GROUPS__PP_PATH + " TEXT, " +
             DB_GROUPS__CREATOR_ID + " TEXT, " +
             DB_GROUPS__CREATION_TIMESTAMP + " TEXT, " +
-            DB_USERS__PP_TIMESTAMP + " TEXT" +
+            DB_GROUPS__PP_TIMESTAMP + " TEXT, " +
+            DB_GROUPS__OLD_PP_TIMESTAMP + " TEXT" +
             ")";
 
     public static final String CREATE_MESSAGES = "CREATE TABLE IF NOT EXISTS " + DB_MESSAGE + " (" +
@@ -134,7 +146,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             DB_MESSAGE__VOICENOTE_LOCAL_PATH + " TEXT, " +
             DB_MESSAGE__RECEIVED + " TEXT, " +
             DB_MESSAGE__READ + " TEXT, " +
-            DB_MESSAGE__ISNEW + " INT" +
+            DB_MESSAGE__ISNEW + " INT DEFAULT 1, " +
+            DB_MESSAGE__REPLY + " TEXT, " +
+            DB_MESSAGE__TYPE + " INT" +
             ")";
 
     public static final String CREATE_USERS_GROUPS = "CREATE TABLE IF NOT EXISTS " + DB_USERS_GROUPS + " (" +
@@ -155,7 +169,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             DB_MESSAGE_FILES__ID + " TEXT, " +
             DB_MESSAGE_FILES__TYPE + " INT, " +
             DB_MESSAGE_FILES__URL + " TEXT, " +
-            DB_MESSAGE_FILES__LOCAL_PATH + " TEXT" +
+            DB_MESSAGE_FILES__LOCAL_PATH + " TEXT, " +
+            DB_MESSAGE_FILES__ORIGINAL_NAME + " TEXT, " +
+            DB_MESSAGE_FILES__SIZE + " REAL, " +
+            DB_MESSAGE_FILES__LENGTH + " REAL, " +
+            DB_MESSAGE_FILES__THUMBNAIL + " TEXT, " +
+            DB_MESSAGE_FILES__LOCAL_THUMBNAIL + " TEXT" +
             ")";
 
     public static final String CREATE_IPCALLS = "CREATE TABLE IF NOT EXISTS " + DB_IPCALLS + " (" +
@@ -193,13 +212,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DB_USERS);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DB_GROUPS);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DB_USERS_GROUPS);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DB_ADMINS_GROUPS);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DB_MESSAGE);
+        //sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DB_USERS);
+        //sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DB_GROUPS);
+        //sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DB_USERS_GROUPS);
+        //sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DB_ADMINS_GROUPS);
+        //sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DB_MESSAGE);
+        sqLiteDatabase.execSQL("DELETE FROM " + DB_MESSAGE + " WHERE " + DB_MESSAGE__MY_RECEPTION_TIMESTAMP + " IN (SELECT "+DB_MESSAGE__MY_RECEPTION_TIMESTAMP+" FROM "+ DB_MESSAGE +" ORDER BY "+ DB_MESSAGE__MY_RECEPTION_TIMESTAMP +" LIMIT 8000)");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DB_MESSAGE_FILES);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DB_IPCALLS);
+        //sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DB_IPCALLS);
         onCreate(sqLiteDatabase);
     }
 }

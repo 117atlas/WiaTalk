@@ -7,12 +7,13 @@ import com.orm.SugarRecord;
 import java.io.Serializable;
 import java.util.List;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Sim'S on 17/05/2018.
  */
 
-public class User implements Serializable {
+public class User implements Serializable{
 
     @SerializedName("_id") @Expose private String _id;
     @SerializedName("phone") @Expose private String mobile;
@@ -22,8 +23,28 @@ public class User implements Serializable {
     @SerializedName("groups") @Expose private List<Group> groups;
     @SerializedName("active") @Expose private boolean active;
 
+    private long old_pp_change_timestamp = 0;
+
     private List<String> groupsIds;
     private String ppPath;
+
+    private String contactName;
+
+    public long getOld_pp_change_timestamp() {
+        return old_pp_change_timestamp;
+    }
+
+    public void setOld_pp_change_timestamp(long old_pp_change_timestamp) {
+        this.old_pp_change_timestamp = old_pp_change_timestamp;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
 
     public String getPpPath() {
         return ppPath;
@@ -127,4 +148,14 @@ public class User implements Serializable {
                 ", groupsIds=" + groupsIds +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return _id.equals(user._id) &&
+                mobile.equals(user.mobile);
+    }
+
 }

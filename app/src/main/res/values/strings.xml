@@ -125,4 +125,20 @@
     <string name="pleasewait">Please wait</string>
     <string name="init_app">Initialisation de l\'application</string>
     <string name="read_contacts_permissions_denied">Permissions refusee lecture de contacts</string>
+    <string name="loading_contacts">Chargement des contacts</string>
+    <string name="refresh">Actualiser</string>
+    <string name="loading">Veillez patienter</string>
+    <string name="change_pp">Changer la photo de profile</string>
+    <string name="edit_group_name_menu">Changer le nom du groupe</string>
+    <string name="goback">Annuler</string>
+    <string name="edit">Modifier</string>
+    <string name="change_group_name">Changer le nom du groupe</string>
+    <string name="remove_pp">Supprimer la photo</string>
+    <string name="group_creation_date">Cree le ????? par ????</string>
+    <string name="group_creation_message">\???? a créé le groupe ?????</string>
+    <string name="add_member_message">\????? a ajouté ????</string>
+    <string name="remove_member_message">\????? a retiré ????</string>
+    <string name="add_admin_message">\????? est maintenant administrateur</string>
+    <string name="change_group_name_message">\?????? a changé le nom du groupe de ????? en ????</string>
+    <string name="change_pp_message">\????? a changé la photo de profil du groupe</string>
 </resources>

@@ -19,8 +19,21 @@ public class MessageFile implements Serializable {
     @SerializedName("_id") @Expose private String _id;
     @SerializedName("type") @Expose private int type;
     @SerializedName("url") @Expose private String url;
+    @SerializedName("original_name") @Expose private String originalName;
+    @SerializedName("size") @Expose private double size;
+    @SerializedName("length") @Expose private double length;
+    @SerializedName("thumbnail") @Expose private String thumbnail;
 
     private String localPath;
+    private String localThumbnail;
+
+    public String getLocalThumbnail() {
+        return localThumbnail;
+    }
+
+    public void setLocalThumbnail(String localThumbnail) {
+        this.localThumbnail = localThumbnail;
+    }
 
     public String getLocalPath() {
         return localPath;
@@ -37,6 +50,38 @@ public class MessageFile implements Serializable {
         this._id = _id;
         this.type = type;
         this.url = url;
+    }
+
+    public String getOriginalName() {
+        return originalName;
+    }
+
+    public void setOriginalName(String originalName) {
+        this.originalName = originalName;
+    }
+
+    public double getSize() {
+        return size;
+    }
+
+    public void setSize(double size) {
+        this.size = size;
+    }
+
+    public double getLength() {
+        return length;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     public String get_id() {

@@ -1,10 +1,13 @@
 package ensp.reseau.wiatalk.ui.activities;
 
 import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -12,6 +15,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -20,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,13 +37,25 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
+import ensp.reseau.wiatalk.app.UpdateReceiver;
+import ensp.reseau.wiatalk.app.WiaTalkApp;
 import ensp.reseau.wiatalk.app.WiaTalkService;
 import ensp.reseau.wiatalk.app.WiaTalkServiceRunnerBroadcastReceiver;
+import ensp.reseau.wiatalk.localstorage.LocalStorageDiscussions;
+import ensp.reseau.wiatalk.model.Group;
+import ensp.reseau.wiatalk.model.Message;
+import ensp.reseau.wiatalk.model.User;
+import ensp.reseau.wiatalk.network.NetworkAPI;
+import ensp.reseau.wiatalk.network.NetworkUtils;
+import ensp.reseau.wiatalk.network.UserInterface;
 import ensp.reseau.wiatalk.ui.UiUtils;
 import ensp.reseau.wiatalk.ui.fragment.CallsFragment;
 import ensp.reseau.wiatalk.ui.fragment.DiscussionsFragment;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements WiaTalkService.IUpdates{
 
     private View navHeader;
     private DrawerLayout main;
@@ -59,12 +76,25 @@ public class MainActivity extends AppCompatActivity {
     private WiaTalkService wiaTalkService;
     private Intent wiaTalkServiceIntent;
 
+    private UpdateReceiver updateReceiver;
+    private boolean pause = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initTabs();
         initDrawer();
+
+        setServiceIntent();
+        /*new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getUpdates();
+            }
+        }, 5000);*/
+
+        onUpdate();
     }
 
     private void initTabs(){
@@ -82,8 +112,6 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(callsFragment, getResources().getString(R.string.tab_calls));
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
-
-        setServiceIntent();
     }
 
     public void initDrawer(){
@@ -247,6 +275,7 @@ public class MainActivity extends AppCompatActivity {
             wiaTalkService = ((WiaTalkService.MyBinder) service).getService();
             //Set Initial Args
             wiaTalkService.setArg0(0.02);
+            wiaTalkService.setMeId(WiaTalkApp.getMe(MainActivity.this).get_Id());
         }
         @Override
         public void onServiceDisconnected(ComponentName name) {
@@ -269,5 +298,81 @@ public class MainActivity extends AppCompatActivity {
         //Send broadcast to start UpdateService after the activity ended
         sendBroadcast(intent);
         super.onDestroy();
+    }
+
+    private void getUpdates(){
+        UserInterface userInterface = NetworkAPI.getClient().create(UserInterface.class);
+        User user = WiaTalkApp.getMe(this);
+        if (user!=null) {
+            Call<UserInterface.GetUserResponse> call = userInterface.updates(user.get_Id());
+            call.enqueue(new Callback<UserInterface.GetUserResponse>() {
+                @Override
+                public void onResponse(Call<UserInterface.GetUserResponse> call, Response<UserInterface.GetUserResponse> response) {
+                    if (response.body()==null) {
+                        Log.e("GET UPDATES", "Response body is null");
+                        return;
+                    }
+                    if (response.body().isError()){
+                        Log.e("GET UPDATES", response.body().getMessage());
+                    }
+                    else{
+                        Log.d("GET UPDATES", "Success");
+                        for (Group group: response.body().getUser().getGroups()){
+                            LocalStorageDiscussions.storeGroup(group, MainActivity.this);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserInterface.GetUserResponse> call, Throwable t) {
+                    Log.e("GET UPDATE FAILURE", t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onUpdate() {
+
+    }
+
+    /*public class UpdateReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle b = intent.getExtras();
+            boolean update = b.getBoolean("update");
+            ArrayList<Group> groups = (ArrayList<Group>) b.getSerializable("Groups");
+            if (update && groups!=null){
+                messagesFragment.update(groups);
+            }
+
+        }
+    }*/
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        pause = true;
+        if(updateReceiver != null)
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(updateReceiver);
+        updateReceiver = null;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (pause) {
+            messagesFragment.update();
+            pause = false;
+        }
+        updateReceiver = new UpdateReceiver(new UpdateReceiver.OnUpdateReceived() {
+            @Override
+            public void onUpdateReceived(ArrayList<Group> groups) {
+                messagesFragment.update(groups);
+            }
+        });
+        final IntentFilter intentFilter = new IntentFilter("Update");
+        LocalBroadcastManager.getInstance(this).registerReceiver(updateReceiver, intentFilter);
     }
 }

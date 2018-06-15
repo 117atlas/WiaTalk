@@ -1,6 +1,7 @@
 package ensp.reseau.wiatalk.ui.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
@@ -16,13 +17,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
-import ensp.reseau.wiatalk.tmodels.Discussion;
-import ensp.reseau.wiatalk.tmodels.Group;
-import ensp.reseau.wiatalk.tmodels.User;
+import ensp.reseau.wiatalk.app.WiaTalkApp;
+import ensp.reseau.wiatalk.localstorage.LocalStorageUser;
+import ensp.reseau.wiatalk.model.Group;
+import ensp.reseau.wiatalk.model.Message;
+import ensp.reseau.wiatalk.model.User;
 import ensp.reseau.wiatalk.ui.UiUtils;
 import ensp.reseau.wiatalk.ui.activities.DiscussionActivity;
 import ensp.reseau.wiatalk.ui.fragment.DiscussionOptionsFragment;
@@ -34,24 +38,27 @@ import ensp.reseau.wiatalk.ui.fragment.ViewPhotoFragment;
 
 public class DiscussionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements DiscussionOptionsFragment.IDiscussionOptions{
 
-    private ArrayList<Discussion> list;
+    private ArrayList<Group> list;
     private Context context;
 
     private static final int TYPE_ITEMVIEW = 1;
     private static final int TYPE_NUMBERITEMS = 0;
 
+    private User me;
+
     public DiscussionsAdapter(Context context){
         this.context = context;
+        me = WiaTalkApp.getMe(context);
     }
 
-    public void setList(ArrayList<Discussion> list){
+    public void setList(ArrayList<Group> list){
         this.list = list;
         notifyDataSetChanged();
     }
 
-    public void add(Discussion discussion){
+    public void add(Group group){
         if (list==null) list = new ArrayList<>();
-        list.add(discussion);
+        list.add(group);
         notifyDataSetChanged();
     }
 
@@ -95,6 +102,10 @@ public class DiscussionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
+    private User getIbUser(Group group){
+        return group.getMembers().get(0).getMember().equals(me)?group.getMembers().get(1).getMember():group.getMembers().get(0).getMember();
+    }
+
     class DiscussionViewHolder extends RecyclerView.ViewHolder{
 
         private CircleImageView pp;
@@ -123,7 +134,9 @@ public class DiscussionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(context, "CLICK", Toast.LENGTH_SHORT).show();
-                    UiUtils.switchActivity(((AppCompatActivity)context), DiscussionActivity.class, false, null);
+                    Intent intent = new Intent(context, DiscussionActivity.class);
+                    intent.putExtra(Group.class.getSimpleName(), list.get(currentPosition));
+                    context.startActivity(intent);
                 }
             });
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -138,72 +151,105 @@ public class DiscussionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             pp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    double rand = Math.random();
-                    Group group = null; User user = null;
-                    if (rand>0.5) {group = new Group(); group.setNom("Gro"); group.setCreationDate(SystemClock.currentThreadTimeMillis()); group.setCreatorId("0"); group.setPp("pp5.jpg"); group.setId("0"); group.setType(Group.TYPE_GROUP);}
-                    else user = new User("id", "697266488", "Samar", "pp3.jpg");
-
-                    ViewPhotoFragment viewPhotoFragment = ViewPhotoFragment.newInstance(group, user);
+                    Group group = list.get(currentPosition);
+                    ViewPhotoFragment viewPhotoFragment = ViewPhotoFragment.newInstance(group, group.getType()==Group.TYPE_IB?getIbUser(group):null);
                     viewPhotoFragment.show(((AppCompatActivity)context).getSupportFragmentManager(), ViewPhotoFragment.class.getSimpleName());
                 }
             });
         }
 
+        private Spannable setLastMessageString(Message lastMessage, boolean isFromMe){
+            if (lastMessage.isSignalisationMessage()){
+                String text = lastMessage.getText();
+                if (text.contains("|++GC++|")){
+                    lastMessage.setText(context.getString(R.string.group_creation_message).replace("?????", lastMessage.getGroup().getName()).replace("????", lastMessage.getSender().getPseudo()));
+                }
+                else if (text.contains("ADD_MEMBER")){
+                    String addedMember = LocalStorageUser.getUserById(U.Split(text, '|').get(1), context).getPseudo();
+                    lastMessage.setText(context.getString(R.string.add_member_message).replace("?????", lastMessage.getSender().getPseudo()).replace("????", addedMember));
+                }
+                else if (text.contains("REMOVE_MEMBER")){
+                    String addedMember = LocalStorageUser.getUserById(U.Split(text, '|').get(1), context).getPseudo();
+                    lastMessage.setText(context.getString(R.string.remove_member_message).replace("?????", lastMessage.getSender().getPseudo()).replace("????", addedMember));
+                }
+                else if (text.contains("ADD_ADMIN")){
+                    lastMessage.setText(context.getString(R.string.add_admin_message).replace("?????", lastMessage.getSender().getPseudo()));
+                }
+                else if (text.contains("CHANGENAME")){
+                    ArrayList<String> names = U.Split(U.Split(text, '|').get(1), '+');
+                    lastMessage.setText(context.getString(R.string.change_group_name_message).replace("??????", lastMessage.getSender().getPseudo()).replace("?????", names.get(0)).replace("????", names.get(1)));
+                }
+                else if (text.contains("CHANGEPICTURE")){
+                    lastMessage.setText(context.getString(R.string.change_pp_message).replace("?????", lastMessage.getSender().getPseudo()));
+                }
+                return new SpannableString(lastMessage.getText());
+            }
+            else{
+                String sender = "", file = "";
+                String[] types = {"Photo", "Video", "Audio", "Document"};
+                if (!isFromMe) sender = "~"+(lastMessage.getSender()!=null?lastMessage.getSender().getPseudo():"Sender")+": ";
+                if (lastMessage.getFile()!=null) file = "["+types[lastMessage.getFile().getType()-1]+"] ";
+                Spannable spannable = new SpannableString(sender+file+lastMessage.getText());
+                spannable.setSpan(new ForegroundColorSpan(Color.BLUE), spannable.toString().indexOf(sender), spannable.toString().indexOf(sender)+sender.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannable.setSpan(new ForegroundColorSpan(Color.MAGENTA), spannable.toString().indexOf(file), spannable.toString().indexOf(file)+file.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                return spannable;
+            }
+        }
+
         public void bind(int position){
             currentPosition = position;
-            Discussion discussion = list.get(position);
+            Group group = list.get(position);
 
-            if (discussion.getPp()==null){
+            if (group.getPp()==null){
                 pp.setVisibility(View.GONE);
                 initiales.setVisibility(View.VISIBLE);
-                initiales.setText(U.Initiales(discussion.getType()==Discussion.TYPE_CONTACT?discussion.getContact():discussion.getGroup()));
+                initiales.setText(U.Initiales(group.getType()==Group.TYPE_IB?getIbUser(group).getPseudo():group.getName()));
             }
             else{
                 pp.setVisibility(View.VISIBLE);
                 initiales.setVisibility(View.GONE);
                 //pp.setImageURI(Uri.fromFile(new File(new URI())));
-                U.loadImage(context, pp, discussion.getPp());
+                UiUtils.showImage(context, pp, group.getType()==Group.TYPE_IB?getIbUser(group).getPpPath():group.getPpPath());
             }
 
-            discName.setText(discussion.getType()==Discussion.TYPE_CONTACT?discussion.getContact():discussion.getGroup());
+            discName.setText(group.getType()==Group.TYPE_IB?getIbUser(group).getPseudo():group.getName());
 
-            if (discussion.isMute()) mute.setVisibility(View.VISIBLE);
-            else mute.setVisibility(View.INVISIBLE);
+            //if (discussion.isMute()) mute.setVisibility(View.VISIBLE);
+            //else mute.setVisibility(View.INVISIBLE);
 
-            date.setText(U.NormalizeDate(discussion.getLastMessageDate(), context));
-            if (discussion.getUnreadMessages()==0) unreadMessages.setVisibility(View.GONE);
+            date.setText(U.NormalizeDate(group.getLastMessage().getMyReceptionTimestamp(), context));
+            if (group.getNewMessages()==0) unreadMessages.setVisibility(View.GONE);
             else unreadMessages.setVisibility(View.VISIBLE);
-            unreadMessages.setText(String.valueOf(discussion.getUnreadMessages()));
+            unreadMessages.setText(String.valueOf(group.getNewMessages()));
 
-            switch (discussion.getLastMessageStatus()){
-                case Discussion.STATUS_NULL : {
-                    status.setVisibility(View.GONE);
-                    if (discussion.getType()==Discussion.TYPE_GROUP){
-                        String sender = "Member:";
-                        Spannable spannable = new SpannableString(sender+" "+discussion.getLastMessageString());
-                        spannable.setSpan(new ForegroundColorSpan(Color.BLUE), 0, sender.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        lastMessage.setText(spannable, TextView.BufferType.SPANNABLE);
+            Message groupLastMessage = group.getLastMessage();
+            if (groupLastMessage.getSender()!=null && groupLastMessage.getSender().equals(me)){
+                switch (group.getLastMessage().getStatus()){
+                    case Message.TYPE_PENDING:{
+                        status.setVisibility(View.VISIBLE);
+                        status.setImageResource(R.drawable.ic_tick);
+                        lastMessage.setText(setLastMessageString(groupLastMessage, true));
+                    } break;
+                    case Message.TPPE_SENT:{
+                        status.setVisibility(View.VISIBLE);
+                        status.setImageResource(R.drawable.ic_tick);
+                        lastMessage.setText(setLastMessageString(groupLastMessage, true));
+                    } break;
+                    case Message.TYPE_RECEIVED: {
+                        status.setVisibility(View.VISIBLE);
+                        status.setImageResource(R.drawable.ic_double_tick);
+                        lastMessage.setText(setLastMessageString(groupLastMessage, true));
+                    } break;
+                    case Message.TYPE_READ: {
+                        status.setVisibility(View.VISIBLE);
+                        status.setImageResource(R.drawable.ic_double_tick_green);
+                        lastMessage.setText(setLastMessageString(groupLastMessage, true));
                     }
-                    else{
-                        lastMessage.setText(discussion.getLastMessageString());
-                    }
-                } break;
-                case Discussion.STATUS_SENT:{
-                    status.setVisibility(View.VISIBLE);
-                    status.setImageResource(R.drawable.ic_tick);
-                    lastMessage.setText(discussion.getLastMessageString());
-                } break;
-                case Discussion.STATUS_RECEIVED: {
-                    status.setVisibility(View.VISIBLE);
-                    status.setImageResource(R.drawable.ic_double_tick);
-                    lastMessage.setText(discussion.getLastMessageString());
-                } break;
-                case Discussion.STATUS_READ: {
-                    status.setVisibility(View.VISIBLE);
-                    status.setImageResource(R.drawable.ic_double_tick_green);
-                    lastMessage.setText(discussion.getLastMessageString());
                 }
+            }
+            else{
+                status.setVisibility(View.GONE);
+                lastMessage.setText(setLastMessageString(groupLastMessage, false));
             }
 
         }

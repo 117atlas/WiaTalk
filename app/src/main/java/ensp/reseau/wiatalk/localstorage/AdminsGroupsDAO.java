@@ -41,10 +41,11 @@ public class AdminsGroupsDAO {
         int i = 0;
         while (cursor.moveToPosition(i)){
             AdminsGroups ag = new AdminsGroups();
-            ag.setMemberId(cursor.getString(0));
+            ag.setAdminId(cursor.getString(0));
             ag.setGroupId(cursor.getString(1));
             ag.setNomination_date(Long.valueOf(cursor.getString(2)));
             adminsGroups.add(ag);
+            i++;
         }
         return adminsGroups;
     }
@@ -73,5 +74,9 @@ public class AdminsGroupsDAO {
                 DatabaseHandler.DB_ADMINS_GROUPS__GROUP + " = '"+groupId+"'", null, null, null, null);
         ArrayList<AdminsGroups> res = cursorToAdminsGroups(cursor);
         return res==null?null:res.get(0);
+    }
+
+    public void deleteAllForGroup(String groupId){
+        database.delete(DatabaseHandler.DB_ADMINS_GROUPS, DatabaseHandler.DB_ADMINS_GROUPS__GROUP + " = '" + groupId + "'", null);
     }
 }

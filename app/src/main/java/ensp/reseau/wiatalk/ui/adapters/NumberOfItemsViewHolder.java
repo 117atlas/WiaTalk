@@ -18,6 +18,6 @@ public class NumberOfItemsViewHolder extends RecyclerView.ViewHolder {
         text = itemView.findViewById(R.id.number_items);
     }
     public void bind(int position, Context context){
-        text.setText(context.getString(R.string.number_items).replace("???", String.valueOf(position-1)));
+        text.setText(context.getString(R.string.number_items).replace("???", String.valueOf(position)));
     }
 }

@@ -35,6 +35,11 @@ public class U {
     public static final int SELECT_AUDIOS_REQ_CODES = 224;
     public static final int SELECT_DOCS_REQ_CODES = 225;
 
+    public static String formatTimestamp(long timestamp){
+        Date date = new Date(timestamp);
+        return date.getDate()+"/"+(date.getMonth()+1)+"/"+(date.getYear()+1900);
+    }
+
     public static String[] toArray(ArrayList<String> list){
         if (list==null) return null;
         String[] res = new String[list.size()];
@@ -51,7 +56,7 @@ public class U {
     }
 
     public static ArrayList<String> Split(String s, char c){
-        if (s==null) return null;
+        if (s==null || s.isEmpty()) return null;
         ArrayList res = new ArrayList();
         String tmp = s.toString();
         while (tmp.contains(String.valueOf(c))){
@@ -67,7 +72,7 @@ public class U {
         if (name==null) return null;
         if (!name.contains(" ")) return name.substring(0, 1);
         ArrayList<String> res = Split(name, ' ');
-        if (res.size()==2) return res.get(0).substring(0, 1)+res.get(1).substring(0, 1);
+        if (res.size()==2) return res.get(0).substring(0, 1)+res.get(1).substring(0, 0);
         else {
             int i = 0;
             while (i<res.size()){

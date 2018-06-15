@@ -14,8 +14,12 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import ensp.reseau.wiatalk.R;
+import ensp.reseau.wiatalk.localstorage.LocalStorageDiscussions;
 import ensp.reseau.wiatalk.tmodels.Discussion;
+import ensp.reseau.wiatalk.model.Group;
 import ensp.reseau.wiatalk.ui.IntentExtra;
 import ensp.reseau.wiatalk.ui.UiUtils;
 import ensp.reseau.wiatalk.ui.activities.ContactsActivity;
@@ -30,6 +34,8 @@ public class DiscussionsFragment extends Fragment {
     private RecyclerView messageList;
     private RelativeLayout noMessageContainer;
     private FloatingActionButton newMessage;
+
+    private DiscussionsAdapter adapter;
     
     public DiscussionsFragment() {
         // Required empty public constructor
@@ -73,9 +79,22 @@ public class DiscussionsFragment extends Fragment {
     }
 
     private void mlistMessages(){
-        DiscussionsAdapter adapter = new DiscussionsAdapter(getContext());
+        adapter = new DiscussionsAdapter(getContext());
         messageList.setLayoutManager(new LinearLayoutManager(getContext()));
         messageList.setAdapter(adapter);
-        adapter.setList(Discussion.random(13));
+        //adapter.setList(Discussion.random(13));
+        ArrayList<Group> groups = LocalStorageDiscussions.getAllDiscussions(getContext());
+        if (groups!=null) for (Group group: groups) if (group.getType()==Group.TYPE_IB) LocalStorageDiscussions.populateGroup(group, getContext());
+        adapter.setList(groups);
+    }
+
+    public void update(ArrayList<Group> groups){
+        if (adapter!=null) adapter.setList(groups);
+    }
+
+    public void update(){
+        ArrayList<Group> groups = LocalStorageDiscussions.getAllDiscussions(getContext());
+        if (groups!=null) for (Group group: groups) if (group.getType()==Group.TYPE_IB) LocalStorageDiscussions.populateGroup(group, getContext());
+        if (adapter!=null) adapter.setList(groups);
     }
 }

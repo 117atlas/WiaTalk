@@ -3,11 +3,13 @@ package ensp.reseau.wiatalk.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by Sim'S on 17/05/2018.
  */
 
-public class IPCall {
+public class IPCall implements Serializable{
 
     public static final int MODE_VOCAL = 1;
     public static final int MODE_VIDEO = 2;

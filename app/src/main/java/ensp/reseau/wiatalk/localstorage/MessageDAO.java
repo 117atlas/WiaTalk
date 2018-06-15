@@ -33,13 +33,17 @@ public class MessageDAO {
         values.put(DatabaseHandler.DB_MESSAGE__SEND_TIMESTAMP, String.valueOf(message.getSend_timestamp()));
         values.put(DatabaseHandler.DB_MESSAGE__SERVER_RECEPTION_TIMESTAMP, String.valueOf(message.getSend_timestamp()));
         values.put(DatabaseHandler.DB_MESSAGE__MY_RECEPTION_TIMESTAMP, String.valueOf(message.getMyReceptionTimestamp()));
-        values.put(DatabaseHandler.DB_MESSAGE__GROUP_ID, String.valueOf(message.getGroupId()));
+        values.put(DatabaseHandler.DB_MESSAGE__GROUP_ID, message.getGroupId());
         values.put(DatabaseHandler.DB_MESSAGE__STATUS, message.getStatus());
         values.put(DatabaseHandler.DB_MESSAGE__TEXT, message.getText());
         values.put(DatabaseHandler.DB_MESSAGE__MESSAGE_FILE_ID, String.valueOf(message.getFileId()));
         values.put(DatabaseHandler.DB_MESSAGE__VOICENOTE_URL, String.valueOf(message.getVoicenote()));
         values.put(DatabaseHandler.DB_MESSAGE__VOICENOTE_LOCAL_PATH, String.valueOf(message.getVoiceNotePath()));
+        values.put(DatabaseHandler.DB_MESSAGE__RECEIVED, message.getReceivedIdsList());
+        values.put(DatabaseHandler.DB_MESSAGE__READ, message.getReadListIds());
         values.put(DatabaseHandler.DB_MESSAGE__ISNEW, message.isNew()?1:0);
+        values.put(DatabaseHandler.DB_MESSAGE__REPLY, message.getReplyId());
+        values.put(DatabaseHandler.DB_MESSAGE__TYPE, message.isSignalisationMessage()?1:0);
         return values;
     }
 
@@ -60,8 +64,13 @@ public class MessageDAO {
             message.setFileId(cursor.getString(8));
             message.setVoicenote(cursor.getString(9));
             message.setVoiceNotePath(cursor.getString(10));
-            message.setNew(cursor.getInt(11)==1?true:false);
+            message.setReceivedIdsList(cursor.getString(11));
+            message.setReadListIds(cursor.getString(12));
+            message.setNew(cursor.getInt(13)==1?true:false);
+            message.setReplyId(cursor.getString(14));
+            message.setSignalisationMessage(cursor.getInt(15)==1?true:false);
             messages.add(message);
+            i++;
         }
         return messages;
     }
@@ -78,13 +87,17 @@ public class MessageDAO {
         return database.delete(DatabaseHandler.DB_MESSAGE, DatabaseHandler.DB_MESSAGE__ID + " = '" + messageId + "'", null);
     }
 
+    public int deleteMessageByTimestamp(long timestamp){
+        return database.delete(DatabaseHandler.DB_MESSAGE, DatabaseHandler.DB_MESSAGE__MY_RECEPTION_TIMESTAMP + " = '" + String.valueOf(timestamp) + "'", null);
+    }
+
     public ArrayList<Message> getAllMessage(){
         Cursor cursor = database.query(DatabaseHandler.DB_MESSAGE, DatabaseHandler.DB_MESSAGE_COLUMNS, null, null, null, null, DatabaseHandler.DB_MESSAGE__MY_RECEPTION_TIMESTAMP);
         return cursorToMessage(cursor);
     }
 
     public ArrayList<Message> getGroupsMessages(String groupId){
-        Cursor cursor = database.query(DatabaseHandler.DB_MESSAGE, DatabaseHandler.DB_MESSAGE_COLUMNS, DatabaseHandler.DB_MESSAGE__GROUP_ID + " = '"+groupId+"'", null, null, null, DatabaseHandler.DB_MESSAGE__MY_RECEPTION_TIMESTAMP + " DESC");
+        Cursor cursor = database.query(DatabaseHandler.DB_MESSAGE, DatabaseHandler.DB_MESSAGE_COLUMNS, DatabaseHandler.DB_MESSAGE__GROUP_ID + " = '"+groupId+"'", null, null, null, DatabaseHandler.DB_MESSAGE__MY_RECEPTION_TIMESTAMP + " ASC");
         return cursorToMessage(cursor);
     }
 
@@ -104,5 +117,19 @@ public class MessageDAO {
         Cursor cursor = database.query(DatabaseHandler.DB_MESSAGE, DatabaseHandler.DB_MESSAGE_COLUMNS, DatabaseHandler.DB_MESSAGE__GROUP_ID + " = '"+groupId+"' AND " +
                 DatabaseHandler.DB_MESSAGE__ISNEW + " = 1", null, null, null, DatabaseHandler.DB_MESSAGE__MY_RECEPTION_TIMESTAMP + " DESC");
         return cursorToMessage(cursor);
+    }
+
+    public ArrayList<Message> getAllNewMessages(){
+        Cursor cursor = database.query(DatabaseHandler.DB_MESSAGE, DatabaseHandler.DB_MESSAGE_COLUMNS, DatabaseHandler.DB_MESSAGE__ISNEW + " = 1", null, null, null, DatabaseHandler.DB_MESSAGE__MY_RECEPTION_TIMESTAMP + " DESC");
+        return cursorToMessage(cursor);
+    }
+
+    public ArrayList<Message> getPendingMessages(){
+        Cursor cursor = database.query(DatabaseHandler.DB_MESSAGE, DatabaseHandler.DB_MESSAGE_COLUMNS, DatabaseHandler.DB_MESSAGE__STATUS + " =0", null, null, null, null);
+        return cursorToMessage(cursor);
+    }
+
+    public int deletePendingMessage(){
+        return database.delete(DatabaseHandler.DB_MESSAGE, DatabaseHandler.DB_MESSAGE__STATUS + " = 0", null);
     }
 }

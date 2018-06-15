@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
-import ensp.reseau.wiatalk.tmodels.User;
+import ensp.reseau.wiatalk.model.User;
+import ensp.reseau.wiatalk.ui.UiUtils;
 
 /**
  * Created by Sim'S on 12/05/2018.
@@ -66,7 +67,7 @@ public class ContactsForAddInGroupAdapter extends RecyclerView.Adapter<ContactsF
 
         public void bind(int position){
             User user = users.get(position);
-            if (user.getPp()==null) {
+            if (user.getPp()==null || user.getPp().isEmpty() || user.getPp().equals("0")) {
                 pp.setVisibility(View.GONE);
                 initiales.setVisibility(View.VISIBLE);
                 initiales.setText(U.Initiales(user.getContactName()==null?user.getPseudo():user.getContactName()));
@@ -80,6 +81,7 @@ public class ContactsForAddInGroupAdapter extends RecyclerView.Adapter<ContactsF
             username.setText(users.get(position).getContactName());
             //Set pp
             //U.loadImage(context, pp, users.get(position).getPp());
+            UiUtils.showImage(context, pp, user.getPpPath());
         }
     }
 }

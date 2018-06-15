@@ -204,7 +204,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/text"
                         android:layout_toRightOf="@id/emoji"
-                        android:layout_toLeftOf="@id/file_container"
+                        android:layout_toLeftOf="@id/send"
                         android:layout_marginLeft="@dimen/padmarg_xsmall"
                         android:layout_marginRight="@dimen/padmarg_xsmall"
                         android:textColor="@color/black"

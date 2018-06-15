@@ -1,5 +1,6 @@
 package ensp.reseau.wiatalk.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -9,10 +10,10 @@ import java.io.Serializable;
  */
 
 public class UsersGroups implements Serializable {
-    @SerializedName("member") private User member;
-    @SerializedName("entrance_date") private long entrance_date;
-    @SerializedName("exit_date") private long exit_date;
-    @SerializedName("is_in_group") private boolean is_in_group;
+    @SerializedName("member") @Expose private User member;
+    @SerializedName("entrance_date") @Expose private long entrance_date;
+    @SerializedName("exit_date") @Expose private long exit_date;
+    @SerializedName("is_in_group") @Expose private boolean is_in_group;
 
     private String groupId;
     private String memberId;
@@ -45,6 +46,10 @@ public class UsersGroups implements Serializable {
 
     public User getMember() {
         return member;
+    }
+
+    public void setMemberId(){
+        this.memberId = this.member==null?null:this.member.get_Id();
     }
 
     public void setMember(User member) {

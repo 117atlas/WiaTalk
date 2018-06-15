@@ -100,8 +100,8 @@ public class CallsAdapter extends RecyclerView.Adapter<CallsAdapter.CallViewHold
             pp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ViewPhotoFragment viewPhotoFragment = ViewPhotoFragment.newInstance(null, new User("id", "697266488", "Samar", "pp3.jpg"));
-                    viewPhotoFragment.show(((AppCompatActivity)context).getSupportFragmentManager(), ViewPhotoFragment.class.getSimpleName());
+                    //ViewPhotoFragment viewPhotoFragment = ViewPhotoFragment.newInstance(null, new User("id", "697266488", "Samar", "pp3.jpg"));
+                    //viewPhotoFragment.show(((AppCompatActivity)context).getSupportFragmentManager(), ViewPhotoFragment.class.getSimpleName());
                 }
             });
         }

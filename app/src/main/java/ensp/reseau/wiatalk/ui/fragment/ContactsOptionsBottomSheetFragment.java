@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ensp.reseau.wiatalk.R;
-import ensp.reseau.wiatalk.tmodels.User;
+import ensp.reseau.wiatalk.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,7 +35,7 @@ public class ContactsOptionsBottomSheetFragment extends BottomSheetDialogFragmen
     }
 
     public interface IOptionsChoosen{
-        void onOptionChoosen(int option);
+        void onOptionChoosen(int option, User user);
     }
 
     @Override
@@ -70,13 +70,13 @@ public class ContactsOptionsBottomSheetFragment extends BottomSheetDialogFragmen
             public void onClick(View view) {
                 switch (view.getId()){
                     case R.id.message: {
-                        iOptionsChoosen.onOptionChoosen(OPTION_MESSAGE);
+                        iOptionsChoosen.onOptionChoosen(OPTION_MESSAGE, user);
                     } break;
                     case R.id.vocal_call: {
-                        iOptionsChoosen.onOptionChoosen(OPTION_VOCAL_CALL);
+                        iOptionsChoosen.onOptionChoosen(OPTION_VOCAL_CALL, user);
                     } break;
                     case R.id.video_call: {
-                        iOptionsChoosen.onOptionChoosen(OPTION_VIDEO_CALL);
+                        iOptionsChoosen.onOptionChoosen(OPTION_VIDEO_CALL, user);
                     } break;
                 }
             }

@@ -11,13 +11,14 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
-import ensp.reseau.wiatalk.tmodels.Group;
-import ensp.reseau.wiatalk.tmodels.User;
+import ensp.reseau.wiatalk.model.Group;
+import ensp.reseau.wiatalk.model.User;
 import ensp.reseau.wiatalk.ui.UiUtils;
 import ensp.reseau.wiatalk.ui.activities.ContactInfosActivity;
 import ensp.reseau.wiatalk.ui.activities.DiscussionActivity;
@@ -68,8 +69,8 @@ public class ViewPhotoFragment extends DialogFragment {
         videoCall = view.findViewById(R.id.video_call);
         discussionName = view.findViewById(R.id.discussion_name);
 
-        discussionName.setText(user==null?group.getNom():(user.getContactName()==null?user.getMobile():user.getContactName()));
-        U.loadImage(getContext(), pp, user==null?group.getPp():user.getPp());
+        discussionName.setText(user==null?group.getName():(user.getContactName()==null?user.getMobile():user.getContactName()));
+        UiUtils.showImage(getContext(), pp, user==null?group.getPpPath():user.getPpPath());
 
         viewProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,5 +100,10 @@ public class ViewPhotoFragment extends DialogFragment {
                 Toast.makeText(getContext(), "Video Call", Toast.LENGTH_SHORT).show();
             }
         });
+
+        if (group.getType()==Group.TYPE_GROUP){
+            videoCall.setVisibility(View.GONE);
+            vocalCall.setVisibility(View.GONE);
+        }
     }
 }

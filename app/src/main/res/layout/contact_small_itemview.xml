@@ -63,4 +63,13 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/isadmin"
+        android:src="@drawable/ic_star_admin"
+        android:layout_gravity="top"
+        android:layout_marginTop="@dimen/padmarg_small"
+        android:layout_marginRight="@dimen/padmarg_small"/>
+
 </LinearLayout>

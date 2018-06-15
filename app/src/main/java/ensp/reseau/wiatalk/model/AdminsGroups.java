@@ -2,16 +2,18 @@ package ensp.reseau.wiatalk.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by Sim'S on 17/05/2018.
  */
 
-public class AdminsGroups {
+public class AdminsGroups implements Serializable{
     @SerializedName("admin") private User admin;
     @SerializedName("nomination_date") private long nomination_date;
 
     private String groupId;
-    private String memberId;
+    private String adminId;
 
     public String getGroupId() {
         return groupId;
@@ -22,11 +24,15 @@ public class AdminsGroups {
     }
 
     public String getMemberId() {
-        return memberId;
+        return adminId;
     }
 
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
+    }
+
+    public void setAdminId() {
+        this.adminId = this.admin==null?null:this.admin.get_Id();
     }
 
     public AdminsGroups() {

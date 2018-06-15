@@ -29,6 +29,7 @@ import java.util.ArrayList;
 
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
+import ensp.reseau.wiatalk.model.MessageFile;
 import ensp.reseau.wiatalk.tmodels.utils.Bucket;
 
 public class GalleryActivity extends AppCompatActivity {
@@ -78,6 +79,7 @@ public class GalleryActivity extends AppCompatActivity {
                     Intent output = new Intent();
                     output.putExtra("SELECTED", selectedMedias);
                     output.putExtra("LEGEND", legend.getText().toString());
+                    output.putExtra("TYPE", bucket.isPhoto()?MessageFile.TYPE_PHOTO:MessageFile.TYPE_VIDEO);
                     setResult(RESULT_OK, output);
                     finish();
                 }

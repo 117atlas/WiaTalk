@@ -32,6 +32,11 @@ public class MessageFileDAO {
         values.put(DatabaseHandler.DB_MESSAGE_FILES__TYPE, messageFile.getType());
         values.put(DatabaseHandler.DB_MESSAGE_FILES__URL, String.valueOf(messageFile.getUrl()));
         values.put(DatabaseHandler.DB_MESSAGE_FILES__LOCAL_PATH, String.valueOf(messageFile.getLocalPath()));
+        values.put(DatabaseHandler.DB_MESSAGE_FILES__ORIGINAL_NAME, messageFile.getOriginalName());
+        values.put(DatabaseHandler.DB_MESSAGE_FILES__SIZE, messageFile.getSize());
+        values.put(DatabaseHandler.DB_MESSAGE_FILES__LENGTH, messageFile.getLength());
+        values.put(DatabaseHandler.DB_MESSAGE_FILES__THUMBNAIL, messageFile.getThumbnail());
+        values.put(DatabaseHandler.DB_MESSAGE_FILES__LOCAL_THUMBNAIL, messageFile.getLocalThumbnail());
         return values;
     }
 
@@ -45,7 +50,13 @@ public class MessageFileDAO {
             mf.setType(cursor.getInt(1));
             mf.setUrl(cursor.getString(2));
             mf.setLocalPath(cursor.getString(3));
+            mf.setOriginalName(cursor.getString(4));
+            mf.setSize(cursor.getDouble(5));
+            mf.setLength(cursor.getDouble(6));
+            mf.setThumbnail(cursor.getString(7));
+            mf.setLocalThumbnail(cursor.getString(8));
             messageFiles.add(mf);
+            i++;
         }
         return messageFiles;
     }

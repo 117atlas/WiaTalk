@@ -48,6 +48,7 @@ public class UsersGroupsDAO {
             ug.setExit_date(Long.valueOf(cursor.getString(3)));
             ug.setIs_in_group(cursor.getInt(4)==1?true:false);
             usersGroups.add(ug);
+            i++;
         }
         return usersGroups;
     }
@@ -86,5 +87,9 @@ public class UsersGroupsDAO {
                 DatabaseHandler.DB_USERS_GROUPS__GROUP + " = '"+groupId+"'", null, null, null, null);
         ArrayList<UsersGroups> res = cursorToUsersGroups(cursor);
         return res==null?null:res.get(0);
+    }
+
+    public void deleteAllForGroup(String groupId){
+        database.delete(DatabaseHandler.DB_USERS_GROUPS, DatabaseHandler.DB_USERS_GROUPS__GROUP + " = '" + groupId + "'", null);
     }
 }

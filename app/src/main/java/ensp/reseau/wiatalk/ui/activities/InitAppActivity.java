@@ -19,11 +19,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import ensp.reseau.wiatalk.R;
+import ensp.reseau.wiatalk.U;
 import ensp.reseau.wiatalk.app.WiaTalkApp;
 import ensp.reseau.wiatalk.network.BaseResponse;
 import ensp.reseau.wiatalk.network.NetworkAPI;
 import ensp.reseau.wiatalk.network.UserContacts;
 import ensp.reseau.wiatalk.network.UserInterface;
+import ensp.reseau.wiatalk.ui.UiUtils;
 import ensp.reseau.wiatalk.ui.fragment.ChoosePpFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,6 +51,7 @@ public class InitAppActivity extends AppCompatActivity {
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                 if (response==null){
                     Log.e("INIT APP", "Response null");
+                    UiUtils.switchActivity(InitAppActivity.this, MainActivity.class, true, null);
                 }
                 else{
                     if (response.body()==null) Log.e("INIT APP", "Response body null");
@@ -56,6 +59,7 @@ public class InitAppActivity extends AppCompatActivity {
                         Log.i("INIT APP", response.body().getMessage() + "  --  " + response.body().isError());
                         if (!response.body().isError()){
                             //NEXT ACTIVITY
+                            UiUtils.switchActivity(InitAppActivity.this, MainActivity.class, true, null);
                         }
                     }
                 }
@@ -64,6 +68,7 @@ public class InitAppActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
                 t.printStackTrace();
+                UiUtils.switchActivity(InitAppActivity.this, MainActivity.class, true, null);
             }
         });
     }

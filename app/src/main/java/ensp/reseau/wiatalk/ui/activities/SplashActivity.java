@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import ensp.reseau.wiatalk.R;
+import ensp.reseau.wiatalk.app.WiaTalkApp;
+import ensp.reseau.wiatalk.model.User;
 import ensp.reseau.wiatalk.ui.UiUtils;
 
 public class SplashActivity extends AppCompatActivity {
@@ -15,11 +17,20 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+
+        User me = WiaTalkApp.getMe(SplashActivity.this);
+        if (me!=null) {
+            UiUtils.switchActivity(SplashActivity.this, InitAppActivity.class, true);
+            finish();
+        }
+        else{
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
                 UiUtils.switchActivity(SplashActivity.this, RegisterActivity.class, true);
-            }
-        }, SPLASH_DELAY);
+                }
+            }, SPLASH_DELAY);
+        }
+
     }
 }

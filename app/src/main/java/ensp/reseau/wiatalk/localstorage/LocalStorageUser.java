@@ -87,14 +87,36 @@ public class LocalStorageUser {
     public static User getMe(Context context){
         UserDAO userDAO = new UserDAO(context);
         User user = null;
+        userDAO.open();
         try{
-            userDAO.open();
             user = userDAO.getMe();
         } catch (Exception e) {e.printStackTrace();}
         finally {
             userDAO.close();
         }
         return user;
+    }
+
+    public static ArrayList<User> getOtherUsers(Context context){
+        UserDAO userDAO = new UserDAO(context);
+        ArrayList<User> users = new ArrayList<>();
+        userDAO.open();
+        try{
+            users = userDAO.getOthersUsers();
+        } finally {
+            userDAO.close();
+        }
+        return users;
+    }
+
+    public static void updateUser(User user, Context context){
+        UserDAO userDAO = new UserDAO(context);
+        userDAO.open();
+        try{
+            userDAO.updateUser(user);
+        } finally {
+            userDAO.close();
+        }
     }
 
 }

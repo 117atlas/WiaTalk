@@ -70,6 +70,291 @@
 
     </android.support.constraint.ConstraintLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/message_file_container"
+        android:visibility="visible"
+        android:padding="@dimen/padmarg_xsmall">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="vertical"
+            android:id="@+id/media_container"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/media"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_videocam_white"
+                android:background="#99000000"
+                android:padding="@dimen/padmarg_xsmall"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/padmarg_small"
+                android:id="@+id/video_indicator"
+                android:layout_marginLeft="@dimen/padmarg_small"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/download_med_container"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="@dimen/padmarg_small"
+                android:layout_marginBottom="@dimen/padmarg_small">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+
+                    <ImageButton
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                        android:id="@+id/download_med"
+                        android:visibility="visible"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_file_download_black_24dp"/>
+
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/download_med_progress"
+                        android:layout_centerVertical="true"
+                        android:visibility="gone"/>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/media_size"
+                    android:textColor="@color/white"
+                    android:background="#99000000"
+                    android:paddingRight="@dimen/padmarg_xsmall"
+                    android:paddingLeft="@dimen/padmarg_xsmall"
+                    android:layout_gravity="center_horizontal"
+                    android:textStyle="bold"
+                    android:text="14 Mb"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/audio_container"
+            android:background="#11000000"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                        android:id="@+id/download_aud"
+                        android:visibility="gone"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_file_download_black_24dp"/>
+
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/download_aud_progress"
+                        android:layout_centerVertical="true"
+                        android:visibility="gone"/>
+
+                    <ImageButton
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                        android:id="@+id/play_aud"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_play_arrow"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:textColor="@color/black"
+                        android:id="@+id/audio_name"
+                        android:text="FH Pirate - Soyez prets"/>
+
+                    <ProgressBar
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+                        android:progress="60"
+                        android:id="@+id/audio_progress"
+                        android:layout_marginTop="@dimen/padmarg_xsmall"
+                        android:layout_below="@id/audio_name"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/audio_progress">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/audio_size"
+                            android:text="4.0 Mb"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:id="@+id/audio_length"
+                            android:text="05:04"
+                            android:layout_marginRight="@dimen/padmarg_medium"/>
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padmarg_small">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/headset"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/document_container"
+            android:background="#11000000"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padmarg_small">
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/document_pp_doc"
+                        android:id="@+id/document_initiales"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:progress="60"
+                        android:id="@+id/document_name"
+                        android:text="Document de presentation"
+                        android:textSize="@dimen/text_big"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/document_name"
+                        android:layout_marginTop="@dimen/padmarg_small">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/document_size"
+                            android:text="4.0 Mb"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:id="@+id/document_type"
+                            android:text="DOCX"
+                            android:layout_marginRight="@dimen/padmarg_medium"/>
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/download_doc_container">
+
+                    <ImageButton
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                        android:id="@+id/download_doc"
+                        android:visibility="visible"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_file_download_black_24dp"/>
+
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/download_doc_progress"
+                        android:layout_centerVertical="true"
+                        android:visibility="gone"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

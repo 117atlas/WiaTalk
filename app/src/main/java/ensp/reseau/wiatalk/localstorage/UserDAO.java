@@ -36,10 +36,11 @@ public class UserDAO {
         values.put(DatabaseHandler.DB_USERS__MOBILE, user.getMobile());
         values.put(DatabaseHandler.DB_USERS__PSEUDO, user.getPseudo());
         values.put(DatabaseHandler.DB_USERS__PP, user.getPp());
-        values.put(DatabaseHandler.DB_USERS__PP_PATH, user.getPpPath());
+        if (user.getPpPath()!=null && !user.getPpPath().isEmpty()) values.put(DatabaseHandler.DB_USERS__PP_PATH, user.getPpPath());
         values.put(DatabaseHandler.DB_USERS__ACTIVE, user.isActive()?1:0);
-        values.put(DatabaseHandler.DB_USERS__PP_TIMESTAMP, user.getPp_change_timestamp());
         if (isMe) values.put(DatabaseHandler.DB_USERS__ISME, 1);
+        values.put(DatabaseHandler.DB_USERS__PP_TIMESTAMP, user.getPp_change_timestamp());
+        values.put(DatabaseHandler.DB_USERS__OLD_PP_TIMESTAMP, user.getOld_pp_change_timestamp());
         return values;
     }
 
@@ -56,6 +57,7 @@ public class UserDAO {
             user.setPpPath(cursor.getString(4));
             user.setActive(cursor.getInt(5)==0?false:true);
             user.setPp_change_timestamp(Long.valueOf(cursor.getString(6)));
+            user.setOld_pp_change_timestamp(Long.valueOf(cursor.getString(7)));
             users.add(user);
             i++;
         }
@@ -89,5 +91,10 @@ public class UserDAO {
         Cursor cursor = database.query(DatabaseHandler.DB_USERS, DatabaseHandler.DB_USERS_COLUMN, DatabaseHandler.DB_USERS__ISME + " = 1", null, null, null, DatabaseHandler.DB_USERS__PSEUDO);
         ArrayList<User> res = cursorToUsers(cursor);
         return res==null?null:res.get(0);
+    }
+
+    public ArrayList<User> getOthersUsers(){
+        Cursor cursor = database.query(DatabaseHandler.DB_USERS, DatabaseHandler.DB_USERS_COLUMN, /*DatabaseHandler.DB_USERS__ISME + " = 0",*/null, null, null, null, DatabaseHandler.DB_USERS__PSEUDO);
+        return cursorToUsers(cursor);
     }
 }

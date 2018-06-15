@@ -15,7 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ensp.reseau.wiatalk.R;
-import ensp.reseau.wiatalk.tmodels.User;
+import ensp.reseau.wiatalk.model.User;
+
+import static android.view.View.GONE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +37,8 @@ public class AdminsOptionsBottomSheetFragment extends BottomSheetDialogFragment 
     private int position;
     private User user;
     private IAdminOptions iAdminOptions;
+    private boolean isAdmin;
+    private boolean amIAdmin;
 
     public interface IAdminOptions{
         public void onOptionChoosen(int option);
@@ -44,11 +48,13 @@ public class AdminsOptionsBottomSheetFragment extends BottomSheetDialogFragment 
         // Required empty public constructor
     }
 
-    public static AdminsOptionsBottomSheetFragment newInstance(int position, User user, IAdminOptions iAdminOptions){
+    public static AdminsOptionsBottomSheetFragment newInstance(int position, User user, boolean isAdmin, boolean amIAdmin, IAdminOptions iAdminOptions){
         AdminsOptionsBottomSheetFragment fragment = new AdminsOptionsBottomSheetFragment();
         fragment.position = position;
         fragment.user = user;
         fragment.iAdminOptions = iAdminOptions;
+        fragment.isAdmin = isAdmin;
+        fragment.amIAdmin = amIAdmin;
         return fragment;
     }
 
@@ -69,6 +75,7 @@ public class AdminsOptionsBottomSheetFragment extends BottomSheetDialogFragment 
 
 
         String textUser = user.getContactName()==null?user.getMobile():user.getContactName();
+        textUser = user.getPseudo();
 
         String viewProfileText = getString(R.string.view_profile);
         int indiceRepViewProfile = viewProfileText.lastIndexOf("????");
@@ -111,5 +118,21 @@ public class AdminsOptionsBottomSheetFragment extends BottomSheetDialogFragment 
         viewProfile.setOnClickListener(listener);
         nominateAdmin.setOnClickListener(listener);
         removeMember.setOnClickListener(listener);
+
+        /*if (amIAdmin){
+            nominateAdmin.setVisibility(View.VISIBLE);
+            removeMember.setVisibility(View.VISIBLE);
+        }
+        else{
+            nominateAdmin.setVisibility(View.GONE);
+            removeMember.setVisibility(View.GONE);
+        }
+
+        if (isAdmin){
+            nominateAdmin.setVisibility(GONE);
+        }
+        else{
+            nominateAdmin.setVisibility(View.VISIBLE);
+        }*/
     }
 }

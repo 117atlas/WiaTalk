@@ -32,8 +32,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import ensp.reseau.wiatalk.R;
 import ensp.reseau.wiatalk.U;
 import ensp.reseau.wiatalk.files.FilesUtils;
-import ensp.reseau.wiatalk.tmodels.User;
+import ensp.reseau.wiatalk.model.User;
 import ensp.reseau.wiatalk.ui.activities.CreateGroupActivity;
+import ensp.reseau.wiatalk.ui.activities.RegisterActivity;
 import ensp.reseau.wiatalk.ui.adapters.ContactsAdapter;
 
 import static android.app.Activity.RESULT_OK;
@@ -88,8 +89,14 @@ public class CreateGroupSetInfosFragment extends Fragment implements ChoosePpFra
         emoji.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (emojiPopup.isShowing()) emojiPopup.dismiss();
-                else emojiPopup.toggle();
+                if (emojiPopup.isShowing()) {
+                    emojiPopup.dismiss();
+                    emoji.setImageResource(R.drawable.ic_insert_emoticon);
+                }
+                else {
+                    emojiPopup.toggle();
+                    emoji.setImageResource(R.drawable.ic_keyboard);
+                }
             }
         });
 
@@ -167,7 +174,7 @@ public class CreateGroupSetInfosFragment extends Fragment implements ChoosePpFra
         }
         else{
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            imageFileUri = FilesUtils.getOutputImageFileUriForGroupCreated(0);
+            imageFileUri = FilesUtils.getOthersPpsUri("temp", getContext());
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
             startActivityForResult(intent, ChoosePpFragment.CHOICE_CAMERA);
         }
@@ -220,7 +227,8 @@ public class CreateGroupSetInfosFragment extends Fragment implements ChoosePpFra
             if (resultCode == RESULT_OK && data!=null && data.getData()!=null){
                 imageFileUri = data.getData();
                 try{
-                    String imageFilePath =  FilesUtils.copyToWiaTalkImagesDirectory(FilesUtils.UriToPath(imageFileUri, getContext()), 0);
+                    String imageFilePath =  FilesUtils.copyToOthersPp(FilesUtils.UriToPath(imageFileUri, getContext()),
+                            "temp", getContext());
                     ppGroup = imageFilePath;
                     //SET LOCAL PHOTO, UPLOAD AND SHOW IN VIEW
                     showPp();
